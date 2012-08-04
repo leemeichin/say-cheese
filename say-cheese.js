@@ -13,67 +13,67 @@
  */
 (function() {
 
+  var SayCheese;
+  
   /* Check for the existence of the userMedia feature. */
   function userMediaFeatureExists() {
     return 'getUserMedia' in navigator ||  'webkitGetUserMedia' in navigator;
   };
 
-  var SayCheese = (function() {
+  SayCheese = function SayCheese() {
+    if (userMediaFeatureExists()) {
+      // do something
+    } else {
+      // should make this more graceful in future
+      throw new Error("getUserMedia() is not supported in this browser");
+    }
 
-    function SayCheese() {
-      if (userMediaFeatureExists()) {
-        // do something
-      } else {
-        // should make this more graceful in future
-        throw new Error("getUserMedia() is not supported in this browser");
-      }
+    return this;
+  };
 
-      return this;
+  // the getUserMedia function is different on Webkit browsers, so we have to
+  // do a bit of faffing about to make sure we call the right one.
+  SayCheese.prototype.getUserMedia = function getUserMedia(success, error) {
+    return (function() {
+      // have to re-bind navigator because the context will be lost, and
+      // we'll get illegal invocation errors.
+      return (navigator.getUserMedia || navigator.webkitGetUserMedia).bind(navigator)
+    })().call(this, { video: true }, success, error);
+  };
+
+  /* The viewfinder is the element we use to preview the webcam stream */
+  SayCheese.prototype.createVideo = function() {
+    element = document.createElement('video');
+    element.autoplay = true;
+    return element;
+  };
+
+  /* The canvas is used for taking 'photos' */
+  SayCheese.prototype.createCanvas = function() {
+    element = document.createElement('canvas');
+    return element;
+  };
+
+  SayCheese.prototype.start = function start() {
+    console.log('testing');
+
+    var success = function userMediaSuccess(stream) {
+      console.log('woop woop', stream);
     };
 
-    // the getUserMedia function is different on Webkit browsers, so we have to
-    // do a bit of faffing about to make sure we call the right one.
-    SayCheese.prototype.getUserMedia = function getUserMedia(success, error) {
-      userMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia);
-      userMedia.call({ video: true }, success, error).apply(this);
+    var error = function userMediaError() {
+      console.log('nooooooooo');
     };
 
-    /* The viewfinder is the element we use to preview the webcam stream */
-    SayCheese.prototype.createVideo = function() {
-      element = document.createElement('video');
-      element.autoplay = true;
-      return element;
-    };
+    this.getUserMedia(success, error);
+  };
 
-    /* The canvas is used for taking 'photos' */
-    SayCheese.prototype.createCanvas = function() {
-      element = document.createElement('canvas');
-      return element;
-    };
+  SayCheese.prototype.stop = function stop() {
 
-    SayCheese.prototype.start = function start() {
+  };
 
-      var success = function userMediaSuccess(stream) {
-        console.log('woop woop', stream);
-      };
+  SayCheese.prototype.takeSnapshot = function takeSnapshot() {
 
-      var error = function userMediaError() {
-        console.log('nooooooooo');
-      };
-
-      this.getUserMedia(success, error);
-    };
-
-    SayCheese.prototype.stop = function stop() {
-
-    };
-
-    SayCheese.prototype.takeSnapshot = function takeSnapshot() {
-
-    };
-
-    return SayCheese;
-
-  })();
+  };
 
 }).call(this);
