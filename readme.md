@@ -2,12 +2,15 @@ Say Cheese!
 ===========
 A minimal library for integrating webcam snapshots into your app.
 
+** work in progress **
+
 Setup
 -----
 Add the script to your page:
 
 ```html
 <script src='say-cheese.js'></script>
+```
 
 Usage
 -----
