@@ -14,7 +14,10 @@
 
 var SayCheese = (function() {
 
-  var SayCheese;
+  var SayCheese,
+      viewfinder,
+      canvas,
+      context;
   
   /* Check for the existence of the userMedia feature. */
   function userMediaFeatureExists() {
@@ -67,12 +70,21 @@ var SayCheese = (function() {
     return element;
   };
 
+  SayCheese.prototype.setupCanvas = function setupCanvas(canvas) {
+    canvas.width = viewfinder.width;
+    canvas.height = viewfinder.height;
+  };
+
   /* Start up the stream, if possible */
   SayCheese.prototype.start = function start() {
-    var success = function userMediaSuccess(stream) {
-     this.viewfinder = this.createVideo();
-     this.viewfinder.src = this.getStreamUrl(stream);
-     document.appendChild(this.viewfinder);
+    var success = function success(stream) {
+      viewfinder = this.createVideo();
+      viewfinder.src = this.getStreamUrl(stream);
+      
+      canvas = this.createCanvas();
+      this.setupCanvas(canvas);
+
+      document.body.appendChild(viewfinder);
     }.bind(this);
 
     /* error is also called when someone denies access */
@@ -83,9 +95,10 @@ var SayCheese = (function() {
     this.getUserMedia(success, error);
   };
 
-  /* Stop it */
+  /* Stop it - TODO: figure out how to actually disable the stream */
   SayCheese.prototype.stop = function stop() {
-
+    console.log(viewfinder);
+    document.body.removeChild(viewfinder);
   };
 
   /* Take a snapshot of the current state of the stream */
