@@ -70,12 +70,15 @@ var SayCheese = (function() {
   /* Start up the stream, if possible */
   SayCheese.prototype.start = function start() {
     var success = function userMediaSuccess(stream) {
-      console.log('woop woop', stream);
-    };
+     this.viewfinder = this.createVideo();
+     this.viewfinder.src = this.getStreamUrl(stream);
+     document.appendChild(this.viewfinder);
+    }.bind(this);
 
+    /* error is also called when someone denies access */
     var error = function userMediaError() {
       console.log('nooooooooo');
-    };
+    }.bind(this);
 
     this.getUserMedia(success, error);
   };
