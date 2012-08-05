@@ -11,7 +11,7 @@
  * Depends on video and canvas, and of course, getUserMedia. It's unlikely to work
  * on anything but the newest browsers.
  */
-(function() {
+var SayCheese = (function() {
 
   var SayCheese;
   
@@ -54,6 +54,7 @@
     return element;
   };
 
+  /* Start up the stream, if possible */
   SayCheese.prototype.start = function start() {
     console.log('testing');
 
@@ -68,12 +69,16 @@
     this.getUserMedia(success, error);
   };
 
+  /* Stop it */
   SayCheese.prototype.stop = function stop() {
 
   };
 
+  /* Take a snapshot of the current state of the stream */
   SayCheese.prototype.takeSnapshot = function takeSnapshot() {
 
   };
+
+  return SayCheese;
 
 }).call(this);

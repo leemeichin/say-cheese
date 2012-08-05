@@ -15,6 +15,9 @@ Add the script to your page:
 Usage
 -----
 TODO: finish this section
+<!--- 
+  use case to optimise for: saving avatars instead of uploading them
+  -->
 
 Compatibility
 -------------
