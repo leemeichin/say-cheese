@@ -55,14 +55,14 @@ var SayCheese = (function() {
   };
 
   /* The viewfinder is the element we use to preview the webcam stream */
-  SayCheese.prototype.createVideo = function() {
+  SayCheese.prototype.createVideo = function createVideo() {
     element = document.createElement('video');
     element.autoplay = true;
     return element;
   };
 
   /* The canvas is used for taking 'photos' */
-  SayCheese.prototype.createCanvas = function() {
+  SayCheese.prototype.createCanvas = function createCanvas() {
     element = document.createElement('canvas');
     return element;
   };
@@ -76,7 +76,7 @@ var SayCheese = (function() {
     }.bind(this);
 
     /* error is also called when someone denies access */
-    var error = function userMediaError() {
+    var error = function error() {
       console.log('nooooooooo');
     }.bind(this);
 
