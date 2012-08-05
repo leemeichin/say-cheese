@@ -11,6 +11,7 @@
  * Depends on video and canvas, and of course, getUserMedia. It's unlikely to work
  * on anything but the newest browsers.
  */
+
 var SayCheese = (function() {
 
   var SayCheese;
@@ -31,13 +32,14 @@ var SayCheese = (function() {
     return this;
   };
 
-  // the getUserMedia function is different on Webkit browsers, so we have to
-  // do a bit of faffing about to make sure we call the right one.
+  /* the getUserMedia function is different on Webkit browsers, so we have to
+   * do a bit of faffing about to make sure we call the right one.
+   */
   SayCheese.prototype.getUserMedia = function getUserMedia(success, error) {
     return (function() {
       // have to re-bind navigator because the context will be lost, and
       // we'll get illegal invocation errors.
-      return (navigator.getUserMedia || navigator.webkitGetUserMedia).bind(navigator)
+      return (navigator.getUserMedia || navigator.webkitGetUserMedia).bind(navigator);
     })().call(this, { video: true }, success, error);
   };
 
@@ -56,8 +58,6 @@ var SayCheese = (function() {
 
   /* Start up the stream, if possible */
   SayCheese.prototype.start = function start() {
-    console.log('testing');
-
     var success = function userMediaSuccess(stream) {
       console.log('woop woop', stream);
     };
