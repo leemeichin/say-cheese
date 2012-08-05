@@ -43,6 +43,17 @@ var SayCheese = (function() {
     })().call(this, { video: true }, success, error);
   };
 
+  /* Webkit behaves differently as regards getting a proper video URL. So we have
+   * to have another check for it.
+   */
+  SayCheese.prototype.getStreamUrl = function getStreamUrl(stream) {
+    url = (function() {
+      return (window.URL || window.webkitURL);
+    })();
+    
+    return (url && url.createObjectURL) ? url.createObjectURL(stream) : stream;
+  };
+
   /* The viewfinder is the element we use to preview the webcam stream */
   SayCheese.prototype.createVideo = function() {
     element = document.createElement('video');
