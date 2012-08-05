@@ -73,6 +73,7 @@ var SayCheese = (function() {
   SayCheese.prototype.setupCanvas = function setupCanvas(canvas) {
     canvas.width = viewfinder.width;
     canvas.height = viewfinder.height;
+    context = canvas.getContext('2d');
   };
 
   /* Start up the stream, if possible */
