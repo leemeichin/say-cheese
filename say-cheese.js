@@ -24,9 +24,11 @@ var SayCheese = (function() {
     return 'getUserMedia' in navigator ||  'webkitGetUserMedia' in navigator;
   };
 
-  SayCheese = function SayCheese() {
+  SayCheese = function SayCheese(element) {
     if (userMediaFeatureExists()) {
       // do something
+      this.element = document.querySelectorAll(element)[0];
+      this.element.style.position = 'relative';
     } else {
       // should make this more graceful in future
       throw new Error("getUserMedia() is not supported in this browser");
@@ -59,33 +61,44 @@ var SayCheese = (function() {
 
   /* The viewfinder is the element we use to preview the webcam stream */
   SayCheese.prototype.createVideo = function createVideo() {
-    element = document.createElement('video');
-    element.autoplay = true;
-    return element;
+    this.viewfinder = document.createElement('video');
+    this.viewfinder.autoplay = true;
   };
 
-  /* The canvas is used for taking 'photos' */
-  SayCheese.prototype.createCanvas = function createCanvas() {
-    element = document.createElement('canvas');
-    return element;
+  SayCheese.prototype.setupCanvas = function setupCanvas() {
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = this.viewfinder.offsetWidth;
+    this.canvas.height = this.viewfinder.offsetHeight;
+    this.canvas.style.position = 'absolute';
+    this.canvas.style.top = this.viewfinder.offsetTop;
+    this.canvas.style.left = this.viewfinder.offsetLeft;
+    
+    this.context = this.canvas.getContext('2d');
+
+    this.element.appendChild(this.canvas);
+    this.watermark();
   };
 
-  SayCheese.prototype.setupCanvas = function setupCanvas(canvas) {
-    canvas.width = viewfinder.width;
-    canvas.height = viewfinder.height;
-    context = canvas.getContext('2d');
+  SayCheese.prototype.watermark = function watermark() {
+    this.context.fillStyle = '#ee5f00';
+    this.context.font = 'bold 32px Helvetica';
+
+    x = this.viewfinder.offsetWidth - 100;
+    y = this.viewfinder.offsetHeight - 15;
+
+    this.context.fillText('demo', x, y);
   };
 
   /* Start up the stream, if possible */
   SayCheese.prototype.start = function start() {
     var success = function success(stream) {
-      viewfinder = this.createVideo();
-      viewfinder.src = this.getStreamUrl(stream);
-      
-      canvas = this.createCanvas();
-      this.setupCanvas(canvas);
+      this.createVideo();
 
-      document.body.appendChild(viewfinder);
+      // it'd be easier to do this inline, but we don't get the size of the video
+      // until the metadata's loaded :/
+      this.viewfinder.addEventListener('loadedmetadata', this.setupCanvas.bind(this), false);
+      this.viewfinder.src = this.getStreamUrl(stream);
+      this.element.appendChild(this.viewfinder);
     }.bind(this);
 
     /* error is also called when someone denies access */
