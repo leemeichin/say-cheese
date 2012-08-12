@@ -29,6 +29,8 @@ var SayCheese = (function() {
       // do something
       this.element = document.querySelectorAll(element)[0];
       this.element.style.position = 'relative';
+
+      this.readyEvent = new CustomEvent('saycheese:ready', true, false);
     } else {
       // should make this more graceful in future
       throw new Error("getUserMedia() is not supported in this browser");
@@ -36,6 +38,7 @@ var SayCheese = (function() {
 
     return this;
   };
+   
 
   /* the getUserMedia function is different on Webkit browsers, so we have to
    * do a bit of faffing about to make sure we call the right one.
@@ -67,8 +70,9 @@ var SayCheese = (function() {
 
   SayCheese.prototype.setupCanvas = function setupCanvas() {
     this.canvas = document.createElement('canvas');
-    this.canvas.width = this.viewfinder.offsetWidth;
-    this.canvas.height = this.viewfinder.offsetHeight;
+    this.canvas.width = this.viewfinderWidth = this.viewfinder.offsetWidth;
+    this.canvas.height = this.viewfinderHeight = this.viewfinder.offsetHeight;
+
     this.canvas.style.position = 'absolute';
     this.canvas.style.top = this.viewfinder.offsetTop;
     this.canvas.style.left = this.viewfinder.offsetLeft;
@@ -77,6 +81,9 @@ var SayCheese = (function() {
 
     this.element.appendChild(this.canvas);
     this.watermark();
+    
+    // we're now all set up, so dispatch the ready event
+    document.dispatchEvent(this.readyEvent);
   };
 
   SayCheese.prototype.watermark = function watermark() {
@@ -90,21 +97,27 @@ var SayCheese = (function() {
   };
 
   /* Start up the stream, if possible */
-  SayCheese.prototype.start = function start() {
+  SayCheese.prototype.start = function start(callback) {
     var success = function success(stream) {
       this.createVideo();
 
       // it'd be easier to do this inline, but we don't get the size of the video
       // until the metadata's loaded :/
       this.viewfinder.addEventListener('loadedmetadata', this.setupCanvas.bind(this), false);
+
       this.viewfinder.src = this.getStreamUrl(stream);
       this.element.appendChild(this.viewfinder);
     }.bind(this);
 
     /* error is also called when someone denies access */
-    var error = function error() {
+    var error = function error(callback) {
       console.log('nooooooooo');
+
+      return callback();
     }.bind(this);
+
+    // fire off the callback when we're all set up
+    document.addEventListener('saycheese:ready', callback.bind(this), false);
 
     this.getUserMedia(success, error);
   };
@@ -117,7 +130,13 @@ var SayCheese = (function() {
 
   /* Take a snapshot of the current state of the stream */
   SayCheese.prototype.takeSnapshot = function takeSnapshot() {
+    window.setTimeout(function() {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+      this.context.drawImage(this.viewfinder, 0, 0, 
+                             this.viewfinderWidth, this.viewfinderHeight);
+
+    }.bind(this), 1500);
   };
 
   return SayCheese;
