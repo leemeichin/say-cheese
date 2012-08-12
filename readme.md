@@ -27,11 +27,12 @@ Usage
 This is probs subject to change, given how early it is.
 
 ```javascript
-   var sayCheese = new SayCheese('#container-element');
-   sayCheese.start(function(e) {
-     // want to take a snapshot?
-     this.takeSnapshot();
-   });
+var sayCheese = new SayCheese('#container-element');
+
+sayCheese.start(function(e) {
+  // want to take a snapshot?
+  this.takeSnapshot();
+});
 ```
 
 This bad boy becomes usable once it triggers its own `saycheese:ready` event (subject
