@@ -14,7 +14,10 @@
     <script>
       function init() {
         var sayCheese = new SayCheese('#say-cheese');
-        sayCheese.start();
+        sayCheese.start(function() {
+          console.log('woop woop');
+          //this.takeSnapshot();
+        });
       }
     </script>
   </body>
