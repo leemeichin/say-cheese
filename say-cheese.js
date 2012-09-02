@@ -18,7 +18,7 @@ var SayCheese = (function() {
       viewfinder,
       canvas,
       context;
-  
+
   /* Check for the existence of the userMedia feature. */
   function userMediaFeatureExists() {
     return 'getUserMedia' in navigator ||  'webkitGetUserMedia' in navigator;
@@ -38,7 +38,7 @@ var SayCheese = (function() {
 
     return this;
   };
-   
+
 
   /* the getUserMedia function is different on Webkit browsers, so we have to
    * do a bit of faffing about to make sure we call the right one.
@@ -58,30 +58,30 @@ var SayCheese = (function() {
     url = (function() {
       return (window.URL || window.webkitURL);
     })();
-    
+
     return (url && url.createObjectURL) ? url.createObjectURL(stream) : stream;
   };
 
   /* The viewfinder is the element we use to preview the webcam stream */
   SayCheese.prototype.createVideo = function createVideo() {
-    this.viewfinder = document.createElement('video');
-    this.viewfinder.autoplay = true;
+    this.video = document.createElement('video');
+    this.video.autoplay = true;
   };
 
   SayCheese.prototype.setupCanvas = function setupCanvas() {
     this.canvas = document.createElement('canvas');
-    this.canvas.width = this.viewfinderWidth = this.viewfinder.offsetWidth;
-    this.canvas.height = this.viewfinderHeight = this.viewfinder.offsetHeight;
+    this.canvas.width = this.videoWidth = this.video.offsetWidth;
+    this.canvas.height = this.videoHeight = this.video.offsetHeight;
 
     this.canvas.style.position = 'absolute';
-    this.canvas.style.top = this.viewfinder.offsetTop;
-    this.canvas.style.left = this.viewfinder.offsetLeft;
-    
+    this.canvas.style.top = this.video.offsetTop;
+    this.canvas.style.left = this.video.offsetLeft;
+
     this.context = this.canvas.getContext('2d');
 
     this.element.appendChild(this.canvas);
     this.watermark();
-    
+
     // we're now all set up, so dispatch the ready event
     document.dispatchEvent(this.readyEvent);
   };
@@ -90,10 +90,22 @@ var SayCheese = (function() {
     this.context.fillStyle = '#ee5f00';
     this.context.font = 'bold 32px Helvetica';
 
-    x = this.viewfinder.offsetWidth - 100;
-    y = this.viewfinder.offsetHeight - 15;
+    x = this.video.offsetWidth - 100;
+    y = this.video.offsetHeight - 15;
 
     this.context.fillText('demo', x, y);
+  };
+
+  /* The viewfinder is a region within the canvas that can be used to
+   * take snapshots of just part of the video stream.
+   */
+  SayCheese.prototype.viewfinder = function() {
+
+  };
+
+  /* Take a snapshot of the current state of the stream */
+  SayCheese.prototype.takeSnapshot = function takeSnapshot() {
+    this.context.drawImage(this.video, 0, 0, this.videoWidth, this.videoHeight);
   };
 
   /* Start up the stream, if possible */
@@ -103,16 +115,15 @@ var SayCheese = (function() {
 
       // it'd be easier to do this inline, but we don't get the size of the video
       // until the metadata's loaded :/
-      this.viewfinder.addEventListener('loadedmetadata', this.setupCanvas.bind(this), false);
+      this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this), false);
 
-      this.viewfinder.src = this.getStreamUrl(stream);
-      this.element.appendChild(this.viewfinder);
+      this.video.src = this.getStreamUrl(stream);
+      this.element.appendChild(this.video);
     }.bind(this);
 
     /* error is also called when someone denies access */
     var error = function error(callback) {
       console.log('nooooooooo');
-
       return callback();
     }.bind(this);
 
@@ -124,19 +135,8 @@ var SayCheese = (function() {
 
   /* Stop it - TODO: figure out how to actually disable the stream */
   SayCheese.prototype.stop = function stop() {
-    console.log(viewfinder);
-    document.body.removeChild(viewfinder);
-  };
-
-  /* Take a snapshot of the current state of the stream */
-  SayCheese.prototype.takeSnapshot = function takeSnapshot() {
-    window.setTimeout(function() {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-      this.context.drawImage(this.viewfinder, 0, 0, 
-                             this.viewfinderWidth, this.viewfinderHeight);
-
-    }.bind(this), 1500);
+    console.log(video);
+    document.body.removeChild(video);
   };
 
   return SayCheese;
