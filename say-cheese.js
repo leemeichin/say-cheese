@@ -175,7 +175,7 @@ var SayCheese = (function($) {
         // mapping the visible canvas area to a new canvas.
         box.width = coords.x - box.startX,
         box.height = coords.y - box.startY;
-    
+
         // draw the shade
         this.context.globalCompositeOperation = 'xor';
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -212,10 +212,10 @@ var SayCheese = (function($) {
     this.viewfinder = {
       startX: 0,
       startY: 0,
-      endX: this.videoWidth,
-      endY: this.videoHeight,
-      width: this.videoWidth,
-      height: this.videoHeight
+      endX: this.video.offsetWidth,
+      endY: this.video.offsetHeight,
+      width: this.video.offsetWidth,
+      height: this.video.offsetHeight
     }
 
     this.trigger('change');
