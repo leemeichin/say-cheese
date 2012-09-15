@@ -217,7 +217,7 @@ var SayCheese = (function() {
     ctx = null;
     this.triggerEvent('snapshot-taken');
     
-    if callback {
+    if (callback) {
      return callback.call(this, snapshot); 
     }
   };
