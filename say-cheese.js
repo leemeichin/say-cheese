@@ -45,6 +45,13 @@ var SayCheese = (function($) {
     return this;
   };
 
+
+  /**
+   * Reimplementing events? No. This is intended to make it easier to
+   * replace jQuery with a different solution in future, should that
+   * become necessary, and also minimises the impact of the framework
+   * on the rest of the code.
+   */
   SayCheese.prototype.on = function on(evt, handler) {
     return $(this).on(evt, handler);
   };
@@ -54,7 +61,9 @@ var SayCheese = (function($) {
   };
 
   SayCheese.prototype.trigger = function trigger(evt, data) {
-    return $(this).trigger(evt, data);
+    // bubbling up the DOM makes things go a bit crazy. This assumes
+    // preventDefault
+    return $(this).triggerHandler(evt, data);
   };
 
   /*
@@ -98,10 +107,11 @@ var SayCheese = (function($) {
     this.context = this.canvas.getContext('2d');
 
     this.element.appendChild(this.canvas);
+    this.initDefaultViewfinder();
     this.initDynamicViewfinder();
 
     // we're now all set up, so dispatch the ready event
-    this.trigger('start');
+    return this.trigger('start');
   };
 
   SayCheese.prototype.watermark = function watermark() {
@@ -119,7 +129,7 @@ var SayCheese = (function($) {
    * The default viewfinder is just the exact size of the video
    */
   SayCheese.prototype.initDefaultViewfinder = function initDefaultViewfinder() {
-    this.viewfinder = {
+    return this.viewfinder = {
       startX: 0,
       startY: 0,
       width: this.video.offsetWidth,
@@ -147,7 +157,6 @@ var SayCheese = (function($) {
       evt.preventDefault();
       isDragging = false;
       this.viewfinder = box;
-      this.takeSnapshot();
     }.bind(this);
 
     var draw = function draw(evt) {
@@ -191,6 +200,7 @@ var SayCheese = (function($) {
     var snapshot = document.createElement('canvas'),
         ctx      = snapshot.getContext('2d');
 
+
     snapshot.width = this.viewfinder.width,
     snapshot.height = this.viewfinder.height;
 
@@ -205,13 +215,13 @@ var SayCheese = (function($) {
                        this.viewfinder.height);
 
     this.snapshots.push(snapshot);
-    ctx = null;
-
     this.trigger('snapshot', snapshot);
 
     if (callback) {
       callback.call(this, snapshot);
     }
+
+    ctx = null;
   };
 
   /* Start up the stream, if possible */
@@ -221,7 +231,6 @@ var SayCheese = (function($) {
 
       // video width and height don't exist until metadata is loaded
       this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this), false);
-      this.video.addEventListener('loadedmetadata', this.initDefaultViewfinder.bind(this), false);
 
       this.video.src = this.getStreamUrl(stream);
       this.element.appendChild(this.video);
@@ -229,8 +238,7 @@ var SayCheese = (function($) {
 
     /* error is also called when someone denies access */
     var error = function error(callback) {
-      console.log('nooooooooo');
-      return callback();
+      this.trigger('error');
     }.bind(this);
 
     // add the callback to the start event if one is supplied.
