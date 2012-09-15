@@ -66,22 +66,26 @@ $(function() {
         sayCheese.on('start', function(evt) {
           console.log(this.viewfinder);
           $('#action-buttons').fadeIn('fast');
-          $('#reset-viewfinder').on('click', function() {
+
+          $('#reset-viewfinder').on('click', function(evt) {
+            event.stopImmediatePropagation();
             sayCheese.resetViewfinder();
           });
 
-          $('#take-snapshot').on('click', function() {
+          $('#take-snapshot').on('click', function(evt) {
+            evt.stopImmediatePropagation();
+            console.log(this.video);
             sayCheese.takeSnapshot();
           });
         });
 
         sayCheese.on('change', function(evt) {
-          console.log(this.viewfinder);
+
         });
 
         sayCheese.on('snapshot', function(evt, snapshot) {
           var img = document.createElement('img');
-          console.log(this.viewfinder);
+
           $(img).on('load', function() {
             $('#say-cheese-snapshots').prepend(img);
           });
