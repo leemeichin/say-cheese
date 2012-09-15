@@ -195,6 +195,20 @@ var SayCheese = (function($) {
     this.canvas.style.cursor = 'crosshair';
   };
 
+  SayCheese.prototype.resetViewfinder = function() {
+    this.context.globalCompositeOperation = 'source-over';
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.viewfinder = {
+      startX: 0,
+      startY: 0,
+      width: this.videoWidth,
+      height: this.videoHeight
+    }
+
+    this.trigger('changed');
+  };
+
   /* Take a snapshot of the current state of the stream */
   SayCheese.prototype.takeSnapshot = function takeSnapshot(callback) {
     var snapshot = document.createElement('canvas'),
