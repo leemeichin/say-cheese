@@ -1,3 +1,6 @@
+---
+---
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -29,16 +32,15 @@
           <h3>Usage</h3>
           <p>After including the script, making use of Say Cheese! is simple :)</p>
 
-<div class="highlight"><pre><code class="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">sayCheese</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SayCheese</span><span class="p">(</span><span class="s1">&#39;#container-element&#39;</span><span class="p">);</span>
-  <span class="nx">sayCheese</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="c1">// do stuff here</span>
-   <span class="k">this</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;saycheese:snapshot-taken&#39;</span><span class="p">)</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-</code></pre>
-</div>
-
+{% highlight javascript %}
+$(function() {
+  var sayCheese = new SayCheese('#container-element');
+  sayCheese.start(function() {
+   // do stuff here
+   this.addEventListener('saycheese:snapshot-taken')
+  });
+});
+{% endhighlight %}
 
         </div>
         <div class='span6'>
