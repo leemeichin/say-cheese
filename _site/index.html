@@ -66,11 +66,12 @@
 
         sayCheese.on('snapshot', function(evt, snapshot) {
           var img = document.createElement('img');
+          console.log(snapshot);
           $(img).on('load', function() {
             console.log('loaded');
-            $('#say-cheese-snapshots').append(img);
+            $('#say-cheese-snapshots').prepend(img);
           });
-          img.src = snapshot.toDataURL();
+          img.src = snapshot.toDataURL('image/png');
         });
 
         sayCheese.start();
