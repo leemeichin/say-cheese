@@ -164,16 +164,9 @@ var SayCheese = (function($) {
       evt.preventDefault();
       var coords = eventCoords(evt);
       if (isDragging) {
-        width = coords.x - box.startX,
-        height = coords.y - box.startY;
-
-        // now calculate the actual box coords for use later
-        box.startX = Math.min(coords.x, box.startX),
-        box.startY = Math.max(coords.y, box.startY),
-        box.width = Math.max(coords.x, box.startX) - box.startX,
-        box.height = Math.min(coords.y, box.startY) - box.startY;
-        
-        
+        box.width = coords.x - box.startX,
+        box.height = coords.y - box.startY;
+    
         // draw the shade
         this.context.globalCompositeOperation = 'xor';
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -183,8 +176,8 @@ var SayCheese = (function($) {
         // draw the window
         this.context.strokeStyle = 'rgba(255, 255, 255, .5)';
         this.context.lineWidth = 2;
-        this.context.strokeRect(box.startX, box.startY, width, height);
-        this.context.fillRect(box.startX, box.startY, width, height);
+        this.context.strokeRect(box.startX, box.startY, box.width, box.height);
+        this.context.fillRect(box.startX, box.startY, box.width, box.height);
       }
     }.bind(this);
 
