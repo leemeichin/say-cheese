@@ -241,8 +241,10 @@ var SayCheese = (function() {
       return callback();
     }.bind(this);
 
-    // fire off the callback when we're all set up
-    document.addEventListener('saycheese:ready', callback.bind(this), false);
+    // fire off the callback when we're all set up, if one is supplied
+    if (callback) {
+      document.addEventListener('saycheese:ready', callback.bind(this), false);
+    }
 
     this.getUserMedia(success, error);
   };
