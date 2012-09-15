@@ -18,13 +18,15 @@
         var sayCheese = new SayCheese('#say-cheese');
         sayCheese.on('start', function(evt) {
           console.log('hi');
+          console.log(this.viewfinder);
+          this.takeSnapshot();
         });
 
         sayCheese.on('change', function() {
           this.takeSnapshot();
         });
         sayCheese.on('snapshot', function(evt, snapshot) {
-          console.log(snapshot, this.viewfinder);
+          console.log(this.viewfinder);
           img = document.createElement('img');
           img.src = snapshot.toDataURL('image/png');
           $(img).on('load', function() {
