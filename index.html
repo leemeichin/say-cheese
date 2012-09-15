@@ -30,15 +30,16 @@
       <div class='row'>
         <div class='span6'>
           <h3>Usage</h3>
-          <p>After including the script, making use of Say Cheese! is simple :)</p>
+          <p>After including the script, making use of *Say Cheese!* is simple :)</p>
 
 {% highlight javascript %}
 $(function() {
   var sayCheese = new SayCheese('#container-element');
-  sayCheese.start(function() {
-   // do stuff here
-   this.addEventListener('saycheese:snapshot-taken')
+  sayCheese.on('start', function(evt, snapshot) {
+    this.takeSnapshot();
   });
+
+  sayCheese.start();
 });
 {% endhighlight %}
 
