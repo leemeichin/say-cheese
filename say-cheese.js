@@ -167,8 +167,12 @@ var SayCheese = (function($) {
         width = coords.x - box.startX,
         height = coords.y - box.startY;
 
-        box.width = Math.min(coords.x, box.startX) - Math.max(coords.x, box.startX),
-        box.height = Math.min(coords.y, box.startY) - Math.max(coords.y, box.startY);
+        // now calculate the actual box coords for use later
+        box.startX = Math.min(coords.x, box.startX),
+        box.startY = Math.max(coords.y, box.startY),
+        box.width = Math.max(coords.x, box.startX) - box.startX,
+        box.height = Math.min(coords.y, box.startY) - box.startY;
+        
         
         // draw the shade
         this.context.globalCompositeOperation = 'xor';
