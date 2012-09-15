@@ -226,8 +226,8 @@ var SayCheese = (function($) {
                        this.viewfinder.height,
                        0,
                        0,
-                       snapshot.width,
-                       snapshot.height);
+                       this.viewfinder.width,
+                       this.viewfinder.height);
 
     this.snapshots.push(snapshot);
     this.trigger('snapshot', snapshot);
