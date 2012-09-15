@@ -216,18 +216,18 @@ var SayCheese = (function($) {
         ctx      = snapshot.getContext('2d');
 
 
-    snapshot.width = this.viewfinder.width,
-    snapshot.height = this.viewfinder.height;
+    snapshot.width = Math.abs(this.viewfinder.width),
+    snapshot.height = Math.abs(this.viewfinder.height);
 
     ctx.drawImage(this.video,
                        this.viewfinder.startX,
                        this.viewfinder.startY,
-                       this.viewfinder.width,
-                       this.viewfinder.height,
+                       snapshot.width,
+                       snapshot.height,
                        0,
                        0,
-                       this.viewfinder.width,
-                       this.viewfinder.height);
+                       snapshot.width,
+                       snapshot.height);
 
     this.snapshots.push(snapshot);
     this.trigger('snapshot', snapshot);
