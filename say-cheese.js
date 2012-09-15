@@ -39,6 +39,7 @@ var SayCheese = (function() {
       this.element.style.position = 'relative';
 
       this.addEvent('ready', true, false);
+      this.addEvent('snapshot-taken', true, false);
     } else {
       // should make this more graceful in future
       throw new Error("getUserMedia() is not supported in this browser");
@@ -213,9 +214,12 @@ var SayCheese = (function() {
                        this.viewfinder.height);
 
     this.snapshots.push(snapshot);
-
-    (callback || function() {}).call(this, snapshot);
     ctx = null;
+    this.triggerEvent('snapshot-taken');
+    
+    if callback {
+     return callback.call(this, snapshot); 
+    }
   };
 
   /* Start up the stream, if possible */
