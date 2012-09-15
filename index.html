@@ -34,8 +34,8 @@
 
       <div class='row'>
         <div class='span6'>
-          <h3>Usage</h3>
-          <p>After including the script, making use of *Say Cheese!* is simple :)</p>
+          <h3>Taking pictures</h3>
+          <p><strong>Say Cheese</strong> exposes a simple, event-based API for taking snapshots from your webcam:</p>
 
 {% highlight javascript %}
 $(function() {
@@ -44,16 +44,41 @@ $(function() {
     this.takeSnapshot();
   });
 
+  sayCheese.on('change', function(evt) {
+    // do something when the viewfinder is resized
+  });
+
+  sayCheese.on('snapshot', function(evt, snapshot) {
+    // a snapshot has been taken, do something with it :)
+  });
+
   sayCheese.start();
 });
 {% endhighlight %}
 
         </div>
         <div class='span6'>
+          <h3>Possible use cases</h3>
+          <ul>
+            <li>Upload profile avatars direct from your webcam
+            <li>Take photos at a set interval
+            <li>Further manipulate canvas output
+          </ul>
 
+          <h3>Status and Compatibility</h3>
+          <p>This bad boy is only going to work for the latest and greatest browsers. Currently, that appears to be <strong>Chrome</strong> and <strong>Opera</strong>.</p>
+          <p>The library itself is currently a proof of concept. It works, and it's functional, but it's by no means robust. Behaviour may change unexpectedly for no discernible reason.</p>
+          <p><strong>Patches welcome!</strong></p>
         </div>
       </div>
     </div>
+
+    <footer>
+      <div class='container'>
+        <hr>
+        <p>Cobbled together by <a href='http://leemach.in'>Lee Machin</a>, 2012</p>
+      </div>
+    </footer>
 
 
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js'></script>
@@ -64,7 +89,6 @@ $(function() {
         var sayCheese = new SayCheese('#say-cheese-container');
 
         sayCheese.on('start', function(evt) {
-          console.log(this.viewfinder);
           $('#action-buttons').fadeIn('fast');
 
           $('#reset-viewfinder').on('click', function(evt) {
@@ -74,13 +98,8 @@ $(function() {
 
           $('#take-snapshot').on('click', function(evt) {
             evt.stopImmediatePropagation();
-            console.log(this.video);
             sayCheese.takeSnapshot();
           });
-        });
-
-        sayCheese.on('change', function(evt) {
-
         });
 
         sayCheese.on('snapshot', function(evt, snapshot) {
