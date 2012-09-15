@@ -157,6 +157,7 @@ var SayCheese = (function($) {
       evt.preventDefault();
       isDragging = false;
       this.viewfinder = box;
+      this.trigger('changed');
     }.bind(this);
 
     var draw = function draw(evt) {
