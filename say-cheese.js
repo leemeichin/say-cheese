@@ -237,8 +237,8 @@ var SayCheese = (function($) {
     }.bind(this);
 
     /* error is also called when someone denies access */
-    var error = function error(callback) {
-      this.trigger('error');
+    var error = function error() {
+      this.trigger('error', arguments);
     }.bind(this);
 
     // add the callback to the start event if one is supplied.
