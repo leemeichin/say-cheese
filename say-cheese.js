@@ -220,14 +220,14 @@ var SayCheese = (function($) {
     snapshot.height = Math.abs(this.viewfinder.height);
 
     ctx.drawImage(this.video,
-                       this.viewfinder.startX,
-                       this.viewfinder.startY,
-                       this.viewfinder.width,
-                       this.viewfinder.height,
-                       0,
-                       0,
-                       this.viewfinder.width,
-                       this.viewfinder.height);
+                  this.viewfinder.startX,
+                  this.viewfinder.startY,
+                  this.viewfinder.width,
+                  this.viewfinder.height,
+                  0,
+                  0,
+                  this.viewfinder.width,
+                  this.viewfinder.height);
 
     this.snapshots.push(snapshot);
     this.trigger('snapshot', snapshot);
