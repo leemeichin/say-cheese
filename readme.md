@@ -51,7 +51,7 @@ Suppose you don't want to take a picture of the entire video, when you're only i
 To integrate with this, an event is triggered when the user stops interacting with the canvas (mouse and experimental touch events supported).
 
 ```javascript
-sayCheese.on('changed', function(evt) {
+sayCheese.on('change', function(evt) {
   // do something in reaction to the viewfinder being resized
 });
 ```
