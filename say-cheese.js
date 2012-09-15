@@ -12,7 +12,7 @@
  * on anything but the newest browsers.
  */
 
-var SayCheese = (function() {
+var SayCheese = (function($) {
 
   var SayCheese;
 
@@ -37,9 +37,6 @@ var SayCheese = (function() {
 
       this.element = document.querySelectorAll(element)[0];
       this.element.style.position = 'relative';
-
-      this.addEvent('ready', true, false);
-      this.addEvent('snapshot-taken', true, false);
     } else {
       // should make this more graceful in future
       throw new Error("getUserMedia() is not supported in this browser");
@@ -48,22 +45,16 @@ var SayCheese = (function() {
     return this;
   };
 
-  /*
-   * maintain a mapping of custom events
-   */
-  SayCheese.prototype.addEvent = function addEvent(name, bubble, cancel) {
-    this.events[name] = new CustomEvent('saycheese:'+name, bubble, cancel);
+  SayCheese.prototype.on = function on(evt, handler) {
+    return $(this).on(evt, handler);
   };
 
-  /*
-   * trigger one of the custom events
-   */
-  SayCheese.prototype.triggerEvent = function(name) {
-    if (this.events[name]) {
-      return document.dispatchEvent(this.events[name]);
-    }
+  SayCheese.prototype.off = function off(evt, handler) {
+    return $(this).off(evt, handler);
+  };
 
-    return false;
+  SayCheese.prototype.trigger = function trigger(evt, data) {
+    return $(this).trigger(evt, data);
   };
 
   /*
@@ -110,7 +101,7 @@ var SayCheese = (function() {
     this.initDynamicViewfinder();
 
     // we're now all set up, so dispatch the ready event
-    this.triggerEvent('ready');
+    this.trigger('start');
   };
 
   SayCheese.prototype.watermark = function watermark() {
@@ -215,10 +206,11 @@ var SayCheese = (function() {
 
     this.snapshots.push(snapshot);
     ctx = null;
-    this.triggerEvent('snapshot-taken');
-    
+
+    this.trigger('snapshot', snapshot);
+
     if (callback) {
-     return callback.call(this, snapshot); 
+      callback.call(this, snapshot);
     }
   };
 
@@ -241,9 +233,9 @@ var SayCheese = (function() {
       return callback();
     }.bind(this);
 
-    // fire off the callback when we're all set up, if one is supplied
+    // add the callback to the start event if one is supplied.
     if (callback) {
-      document.addEventListener('saycheese:ready', callback.bind(this), false);
+      this.on('start', callback);
     }
 
     this.getUserMedia(success, error);
@@ -257,4 +249,4 @@ var SayCheese = (function() {
 
   return SayCheese;
 
-}).call(this);
+})($);
