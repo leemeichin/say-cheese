@@ -22,4 +22,11 @@
   width: 280px;
   height: 480px;
   max-height: 480px;
+  overflow: auto;
+}
+
+#say-cheese-snapshots img {
+  display: block;
+  padding: 5px;
+  max-width: 270px;
 }
