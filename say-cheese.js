@@ -132,6 +132,8 @@ var SayCheese = (function($) {
     return this.viewfinder = {
       startX: 0,
       startY: 0,
+      endX: this.video.offsetWidth,
+      endY: this.video.offsetHeight,
       width: this.video.offsetWidth,
       height: this.video.offsetHeight
     };
@@ -156,6 +158,11 @@ var SayCheese = (function($) {
     var stop = function stop(evt) {
       evt.preventDefault();
       isDragging = false;
+
+      var coords = eventCoords(evt);
+      box.endX = coords.x,
+      box.endY = coords.y;
+
       this.viewfinder = box;
       this.trigger('change');
     }.bind(this);
@@ -164,6 +171,8 @@ var SayCheese = (function($) {
       evt.preventDefault();
       var coords = eventCoords(evt);
       if (isDragging) {
+        // used absolutely, can show dimensions. Use endX and endY for
+        // mapping the visible canvas area to a new canvas.
         box.width = coords.x - box.startX,
         box.height = coords.y - box.startY;
 
@@ -203,6 +212,8 @@ var SayCheese = (function($) {
     this.viewfinder = {
       startX: 0,
       startY: 0,
+      endX: this.videoWidth,
+      endY: this.videoHeight,
       width: this.videoWidth,
       height: this.videoHeight
     }
@@ -220,14 +231,14 @@ var SayCheese = (function($) {
     snapshot.height = Math.abs(this.viewfinder.height);
 
     ctx.drawImage(this.video,
-                  this.viewfinder.startX,
-                  this.viewfinder.startY,
-                  this.viewfinder.width,
-                  this.viewfinder.height,
+                  Math.min(this.viewfinder.startX, this.viewfinder.endX),
+                  Math.min(this.viewfinder.startY, this.viewfinder.endY),
+                  snapshot.width,
+                  snapshot.height,
                   0,
                   0,
-                  this.viewfinder.width,
-                  this.viewfinder.height);
+                  snapshot.width,
+                  snapshot.height);
 
     this.snapshots.push(snapshot);
     this.trigger('snapshot', snapshot);
