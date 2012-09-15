@@ -157,15 +157,15 @@ var SayCheese = (function($) {
       evt.preventDefault();
       isDragging = false;
       this.viewfinder = box;
-      this.trigger('changed');
+      this.trigger('change');
     }.bind(this);
 
     var draw = function draw(evt) {
       evt.preventDefault();
       var coords = eventCoords(evt);
       if (isDragging) {
-        box.width = Math.abs(coords.x - box.startX),
-        box.height = Math.abs(coords.y - box.startY);
+        box.width = coords.x - box.startX,
+        box.height = coords.y - box.startY;
 
         // draw the shade
         this.context.globalCompositeOperation = 'xor';
@@ -207,7 +207,7 @@ var SayCheese = (function($) {
       height: this.videoHeight
     }
 
-    this.trigger('changed');
+    this.trigger('change');
   };
 
   /* Take a snapshot of the current state of the stream */
@@ -216,14 +216,14 @@ var SayCheese = (function($) {
         ctx      = snapshot.getContext('2d');
 
 
-    snapshot.width = this.viewfinder.width,
-    snapshot.height = this.viewfinder.height;
+    snapshot.width  = Math.abs(this.viewfinder.width),
+    snapshot.height = Math.abs(this.viewfinder.height);
 
     ctx.drawImage(this.video,
                        this.viewfinder.startX,
                        this.viewfinder.startY,
-                       snapshot.width,
-                       snapshot.height,
+                       this.viewfinder.width,
+                       this.viewfinder.height,
                        0,
                        0,
                        snapshot.width,
