@@ -88,6 +88,15 @@ Stopping the show
 -----------------
 The ability to stop a stream, and turn off the webcam, is still a WIP.
 
+Gotchas
+-------
+Things aren't exactly robust. It works in most cases but is still mostly just a proof of concept.
+
+ - Full sized snapshots both do and don't work, for reasons unknown as yet.
+ - Related to above, the snapshot might be blank.
+ - Trying to place the viewfinder off the edge of the video will get you a blank shot.
+
+Also, no tests. *sob*.
 
 Compatibility
 -------------
