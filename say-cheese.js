@@ -164,8 +164,8 @@ var SayCheese = (function($) {
       evt.preventDefault();
       var coords = eventCoords(evt);
       if (isDragging) {
-        box.width = coords.x - box.startX;
-        box.height = coords.y - box.startY;
+        box.width = Math.abs(coords.x - box.startX),
+        box.height = Math.abs(coords.y - box.startY);
 
         // draw the shade
         this.context.globalCompositeOperation = 'xor';
@@ -216,8 +216,8 @@ var SayCheese = (function($) {
         ctx      = snapshot.getContext('2d');
 
 
-    snapshot.width = Math.abs(this.viewfinder.width),
-    snapshot.height = Math.abs(this.viewfinder.height);
+    snapshot.width = this.viewfinder.width,
+    snapshot.height = this.viewfinder.height;
 
     ctx.drawImage(this.video,
                        this.viewfinder.startX,
