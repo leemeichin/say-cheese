@@ -25,7 +25,7 @@ var SayCheese = (function($) {
      return { x: evt.offsetX || evt.layerX, y: evt.offsetY || evt.layerY };
   };
 
-  SayCheese = function SayCheese(element) {
+  SayCheese = function SayCheese(element, options) {
     if (userMediaFeatureExists()) {
 
       this.viewfinder = {},
@@ -33,10 +33,14 @@ var SayCheese = (function($) {
       this.canvas = null,
       this.context = null,
       this.video = null,
-      this.events = {};
+      this.events = {},
+      this.options = {
+        dynamicViewfinder: false
+      };
 
       this.element = document.querySelectorAll(element)[0];
       this.element.style.position = 'relative';
+      this.setOptions(options);
     } else {
       // should make this more graceful in future
       throw new Error("getUserMedia() is not supported in this browser");
@@ -65,6 +69,21 @@ var SayCheese = (function($) {
     // preventDefault
     return $(this).triggerHandler(evt, data);
   };
+
+ /**
+  * Same with merging/extending objects.
+  */
+  SayCheese.prototype.merge = function merge(target, object) {
+    return $.extend(target, object);
+  }
+
+
+  /*
+   * Set us up the options!
+   */
+  SayCheese.prototype.setOptions = function setOptions(options) {
+    this.options = this.merge(this.options, options);
+  }
 
   /*
    * the getUserMedia function is different on Webkit browsers, so we have to
@@ -107,8 +126,13 @@ var SayCheese = (function($) {
     this.context = this.canvas.getContext('2d');
 
     this.element.appendChild(this.canvas);
+
+
     this.initDefaultViewfinder();
-    this.initDynamicViewfinder();
+
+    if (this.options.dynamicViewfinder == true) {
+      this.initDynamicViewfinder();
+    }
 
     // we're now all set up, so dispatch the ready event
     return this.trigger('start');
