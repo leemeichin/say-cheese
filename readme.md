@@ -48,6 +48,12 @@ Dynamic viewfinder
 ------------------
 Suppose you don't want to take a picture of the entire video, when you're only interested in a small part of it. You can simply click and drag a rectangle over the video to select the area of interest.
 
+To enable this, just set `dynamicViewfinder` to `true` when starting up:
+
+```javascript
+var sayCheese = new SayCheese('#element', { dynamicViewfinder: true });
+```
+
 To integrate with this, an event is triggered when the user stops interacting with the canvas (mouse and experimental touch events supported).
 
 ```javascript
