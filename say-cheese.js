@@ -51,12 +51,9 @@ var SayCheese = (function($) {
     return this;
   };
 
-
   /**
-   * Reimplementing events? No. This is intended to make it easier to
-   * replace jQuery with a different solution in future, should that
-   * become necessary, and also minimises the impact of the framework
-   * on the rest of the code.
+   * Wrap the jQuery stuff so as to minimise the impact of the framework on
+   * the rest of the code.
    */
   SayCheese.prototype.on = function on(evt, handler) {
     return $(this).on(evt, handler);
@@ -122,24 +119,10 @@ var SayCheese = (function($) {
       this.initDynamicViewfinder();
     }
 
-    // we're now all set up, so dispatch the ready event
     return this.trigger('start');
   };
 
-  SayCheese.prototype.watermark = function watermark() {
-    this.context.fillStyle = '#ee5f00';
-    this.context.font = 'bold 32px Helvetica';
-
-    x = this.video.offsetWidth - 100;
-    y = this.video.offsetHeight - 15;
-
-    this.context.fillText('demo', x, y);
-  };
-
-
-  /*
-   * The default viewfinder is just the exact size of the video
-   */
+  /* The default viewfinder is just the exact size of the video */
   SayCheese.prototype.initDefaultViewfinder = function initDefaultViewfinder() {
     return this.viewfinder = {
       startX: 0,
@@ -151,11 +134,8 @@ var SayCheese = (function($) {
     };
   };
 
-  /*
-   *  This viewfinder can be resized to capture select portions of the video stream
-   */
+  /* This viewfinder can be resized to capture specific parts of the video stream */
   SayCheese.prototype.initDynamicViewfinder = function initDynamicViewfinder() {
-    // track the dragging status when events are fired
     var isDragging = false,
         box = {};
 
@@ -233,11 +213,9 @@ var SayCheese = (function($) {
     this.trigger('change');
   };
 
-  /* Take a snapshot of the current state of the stream */
   SayCheese.prototype.takeSnapshot = function takeSnapshot(callback) {
     var snapshot = document.createElement('canvas'),
         ctx      = snapshot.getContext('2d');
-
 
     snapshot.width  = Math.abs(this.viewfinder.width),
     snapshot.height = Math.abs(this.viewfinder.height);
@@ -268,7 +246,7 @@ var SayCheese = (function($) {
       this.createVideo();
 
       // video width and height don't exist until metadata is loaded
-      this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this), false);
+      this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
 
       this.video.src = this.getStreamUrl(stream);
       this.element.appendChild(this.video);
@@ -284,7 +262,7 @@ var SayCheese = (function($) {
       this.on('start', callback);
     }
 
-    this.getUserMedia(success, error);
+    return this.getUserMedia(success, error);
   };
 
   /* Stop it - TODO: figure out how to actually disable the stream */
