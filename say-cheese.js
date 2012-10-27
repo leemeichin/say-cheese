@@ -18,8 +18,11 @@ var SayCheese = (function($) {
 
   /* Check for the existence of the userMedia feature. */
   function userMediaFeatureExists() {
-    return 'getUserMedia' in navigator ||  'webkitGetUserMedia' in navigator;
+    return 'getUserMedia'       in navigator ||
+           'webkitGetUserMedia' in navigator ||
+           'mozGetUserMedia'    in navigator;
   };
+
 
   function eventCoords(evt) {
      return { x: evt.offsetX || evt.layerX, y: evt.offsetY || evt.layerY };
@@ -27,7 +30,6 @@ var SayCheese = (function($) {
 
   SayCheese = function SayCheese(element, options) {
     if (userMediaFeatureExists()) {
-
       this.viewfinder = {},
       this.snapshots = [],
       this.canvas = null,
@@ -70,37 +72,23 @@ var SayCheese = (function($) {
     return $(this).triggerHandler(evt, data);
   };
 
- /**
-  * Same with merging/extending objects.
-  */
   SayCheese.prototype.merge = function merge(target, object) {
     return $.extend(target, object);
   }
 
-
-  /*
-   * Set us up the options!
-   */
   SayCheese.prototype.setOptions = function setOptions(options) {
     this.options = this.merge(this.options, options);
   }
 
-  /*
-   * the getUserMedia function is different on Webkit browsers, so we have to
-   * do a bit of faffing about to make sure we call the right one.
-   */
+
   SayCheese.prototype.getUserMedia = function getUserMedia(success, error) {
     return (function() {
-      // have to re-bind navigator because the context will be lost, and
-      // we'll get illegal invocation errors.
-      return (navigator.getUserMedia || navigator.webkitGetUserMedia).bind(navigator);
+      return (navigator.getUserMedia ||
+              navigator.webkitGetUserMedia ||
+              navigator.mozGetUserMedia).bind(navigator);
     })().call(this, { video: true }, success, error);
   };
 
-  /*
-   * Webkit behaves differently as regards getting a proper video URL. So we have
-   * to have another check for it.
-   */
   SayCheese.prototype.getStreamUrl = function getStreamUrl(stream) {
     url = (function() {
       return (window.URL || window.webkitURL);
