@@ -133,8 +133,8 @@ var SayCheese = (function($) {
     }.bind(this);
 
     /* error is also called when someone denies access */
-    var error = function error(msg) {
-      this.trigger('error', msg);
+    var error = function error(error) {
+      this.trigger('error', error);
     }.bind(this);
 
     return navigator.getUserMedia({ video: true }, success, error);
