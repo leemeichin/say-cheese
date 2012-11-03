@@ -28,21 +28,15 @@ var SayCheese = (function($) {
   };
 
   SayCheese = function SayCheese(element) {
-    if (navigator.getUserMedia !== false) {
-      this.viewfinder = {},
-      this.snapshots = [],
-      this.canvas = null,
-      this.context = null,
-      this.video = null,
-      this.events = {},
+    this.viewfinder = {},
+    this.snapshots = [],
+    this.canvas = null,
+    this.context = null,
+    this.video = null,
+    this.events = {},
 
-      this.element = document.querySelectorAll(element)[0];
-      this.element.style.position = 'relative';
-
-    } else {
-      // should make this more graceful in future
-      throw new Error("getUserMedia() is not supported in this browser");
-    }
+    this.element = document.querySelectorAll(element)[0];
+    this.element.style.position = 'relative';
 
     return this;
   };
@@ -122,6 +116,13 @@ var SayCheese = (function($) {
 
   /* Start up the stream, if possible */
   SayCheese.prototype.start = function start() {
+
+    // fail fast and softly if browser not supported
+    if (navigator.getUserMedia === false) {
+      this.trigger('error', 'NOT_SUPPORTED');
+      return false;
+    }
+
     var success = function success(stream) {
       this.createVideo();
 
@@ -132,8 +133,8 @@ var SayCheese = (function($) {
     }.bind(this);
 
     /* error is also called when someone denies access */
-    var error = function error() {
-      this.trigger('error', arguments);
+    var error = function error(msg) {
+      this.trigger('error', msg);
     }.bind(this);
 
     return navigator.getUserMedia({ video: true }, success, error);
