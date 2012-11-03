@@ -15,8 +15,7 @@ It also requires jQuery (for events), so make sure to include that before this.
 Usage
 -----
 
-Say Cheese exposes a minimal, callback based API, as well as some
-events to hook into, if you're bored of spaghetti.
+Say Cheese exposes a minimal, event based API:
 
 ```javascript
 var sayCheese = new SayCheese('#element');
