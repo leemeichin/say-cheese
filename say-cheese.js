@@ -36,6 +36,7 @@ var SayCheese = (function($) {
     this.context = null,
     this.video = null,
     this.events = {},
+    this.stream = null;
 
     this.element = document.querySelectorAll(element)[0];
     this.element.style.position = 'relative';
@@ -61,11 +62,11 @@ var SayCheese = (function($) {
     return $(this).triggerHandler(evt, data);
   };
 
-  SayCheese.prototype.getStreamUrl = function getStreamUrl(stream) {
+  SayCheese.prototype.getStreamUrl = function getStreamUrl() {
     if (window.URL && window.URL.createObjectURL) {
-      return window.URL.createObjectURL(stream);
+      return window.URL.createObjectURL(this.stream);
     } else {
-      return stream;
+      return this.stream;
     }
   };
 
@@ -86,7 +87,6 @@ var SayCheese = (function($) {
     this.context = this.canvas.getContext('2d');
 
     this.element.appendChild(this.canvas);
-
 
     this.initViewfinder();
 
@@ -126,11 +126,12 @@ var SayCheese = (function($) {
     }
 
     var success = function success(stream) {
+      this.stream = stream;
       this.createVideo();
 
       // video width and height don't exist until metadata is loaded
       this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
-      this.video.src = this.getStreamUrl(stream);
+      this.video.src = this.getStreamUrl();
       this.element.appendChild(this.video);
     }.bind(this);
 
@@ -142,10 +143,8 @@ var SayCheese = (function($) {
     return navigator.getUserMedia({ video: true }, success, error);
   };
 
-  /* Stop it - TODO: figure out how to actually disable the stream */
   SayCheese.prototype.stop = function stop() {
-    this.video = null;
-    document.body.removeChild(video);
+    return this.stream.stop();
   };
 
   return SayCheese;
