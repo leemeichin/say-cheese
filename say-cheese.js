@@ -16,12 +16,14 @@ var SayCheese = (function($) {
 
   var SayCheese;
 
-  /* Check for the existence of the userMedia feature. */
   navigator.getUserMedia = (navigator.getUserMedia ||
                             navigator.webkitGetUserMedia ||
                             navigator.mozGetUserMedia ||
                             navigator.msGetUserMedia ||
                             false);
+
+  window.URL = (window.URL ||
+                window.webkitURL);
 
   function eventCoords(evt) {
     return { x: evt.offsetX || evt.layerX, y: evt.offsetY || evt.layerY };
@@ -60,11 +62,11 @@ var SayCheese = (function($) {
   };
 
   SayCheese.prototype.getStreamUrl = function getStreamUrl(stream) {
-    var url = (function() {
-      return (window.URL || window.webkitURL);
-    })();
-
-    return (url && url.createObjectURL) ? url.createObjectURL(stream) : stream;
+    if (window.URL && window.URL.createObjectURL) {
+      return window.URL.createObjectURL(stream);
+    } else {
+      return stream;
+    }
   };
 
   SayCheese.prototype.createVideo = function createVideo() {
