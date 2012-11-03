@@ -60,7 +60,7 @@ var SayCheese = (function($) {
   };
 
   SayCheese.prototype.getStreamUrl = function getStreamUrl(stream) {
-    url = (function() {
+    var url = (function() {
       return (window.URL || window.webkitURL);
     })();
 
