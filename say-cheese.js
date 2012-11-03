@@ -17,32 +17,28 @@ var SayCheese = (function($) {
   var SayCheese;
 
   /* Check for the existence of the userMedia feature. */
-  function userMediaFeatureExists() {
-    return 'getUserMedia'       in navigator ||
-           'webkitGetUserMedia' in navigator ||
-           'mozGetUserMedia'    in navigator;
-  };
-
+  navigator.getUserMedia = (navigator.getUserMedia ||
+                            navigator.webkitGetUserMedia ||
+                            navigator.mozGetUserMedia ||
+                            navigator.msGetUserMedia ||
+                            false);
 
   function eventCoords(evt) {
-     return { x: evt.offsetX || evt.layerX, y: evt.offsetY || evt.layerY };
+    return { x: evt.offsetX || evt.layerX, y: evt.offsetY || evt.layerY };
   };
 
-  SayCheese = function SayCheese(element, options) {
-    if (userMediaFeatureExists()) {
+  SayCheese = function SayCheese(element) {
+    if (navigator.getUserMedia !== false) {
       this.viewfinder = {},
       this.snapshots = [],
       this.canvas = null,
       this.context = null,
       this.video = null,
       this.events = {},
-      this.options = {
-        dynamicViewfinder: false
-      };
 
       this.element = document.querySelectorAll(element)[0];
       this.element.style.position = 'relative';
-      this.setOptions(options);
+
     } else {
       // should make this more graceful in future
       throw new Error("getUserMedia() is not supported in this browser");
@@ -67,23 +63,6 @@ var SayCheese = (function($) {
     // bubbling up the DOM makes things go a bit crazy. This assumes
     // preventDefault
     return $(this).triggerHandler(evt, data);
-  };
-
-  SayCheese.prototype.merge = function merge(target, object) {
-    return $.extend(target, object);
-  }
-
-  SayCheese.prototype.setOptions = function setOptions(options) {
-    this.options = this.merge(this.options, options);
-  }
-
-
-  SayCheese.prototype.getUserMedia = function getUserMedia(success, error) {
-    return (function() {
-      return (navigator.getUserMedia ||
-              navigator.webkitGetUserMedia ||
-              navigator.mozGetUserMedia).bind(navigator);
-    })().call(this, { video: true }, success, error);
   };
 
   SayCheese.prototype.getStreamUrl = function getStreamUrl(stream) {
@@ -113,141 +92,41 @@ var SayCheese = (function($) {
     this.element.appendChild(this.canvas);
 
 
-    this.initDefaultViewfinder();
-
-    if (this.options.dynamicViewfinder == true) {
-      this.initDynamicViewfinder();
-    }
+    this.initViewfinder();
 
     return this.trigger('start');
   };
 
   /* The default viewfinder is just the exact size of the video */
-  SayCheese.prototype.initDefaultViewfinder = function initDefaultViewfinder() {
+  SayCheese.prototype.initViewfinder = function initViewfinder() {
     return this.viewfinder = {
-      startX: 0,
-      startY: 0,
-      endX: this.video.offsetWidth,
-      endY: this.video.offsetHeight,
       width: this.video.offsetWidth,
       height: this.video.offsetHeight
     };
   };
 
-  /* This viewfinder can be resized to capture specific parts of the video stream */
-  SayCheese.prototype.initDynamicViewfinder = function initDynamicViewfinder() {
-    var isDragging = false,
-        box = {};
-
-    var start = function start(evt) {
-      evt.preventDefault();
-      var coords = eventCoords(evt);
-      box.startX = coords.x;
-      box.startY = coords.y;
-      isDragging = true;
-    }.bind(this);
-
-    var stop = function stop(evt) {
-      evt.preventDefault();
-      isDragging = false;
-
-      var coords = eventCoords(evt);
-      box.endX = coords.x,
-      box.endY = coords.y;
-
-      this.viewfinder = box;
-      this.trigger('change');
-    }.bind(this);
-
-    var draw = function draw(evt) {
-      evt.preventDefault();
-      var coords = eventCoords(evt);
-      if (isDragging) {
-        // used absolutely, can show dimensions. Use endX and endY for
-        // mapping the visible canvas area to a new canvas.
-        box.width = coords.x - box.startX,
-        box.height = coords.y - box.startY;
-
-        // draw the shade
-        this.context.globalCompositeOperation = 'xor';
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.fillStyle = 'rgba(0, 0, 0, .8)';
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // draw the window
-        this.context.strokeStyle = 'rgba(255, 255, 255, .5)';
-        this.context.lineWidth = 2;
-        this.context.strokeRect(box.startX, box.startY, box.width, box.height);
-        this.context.fillRect(box.startX, box.startY, box.width, box.height);
-      }
-    }.bind(this);
-
-    this.canvas.addEventListener('mousedown', start, true);
-    this.canvas.addEventListener('mouseup', stop, true);
-    this.canvas.addEventListener('mousemove', draw, true);
-
-    // add touch events if they're there
-    if ('ontouchstart' in window) {
-      this.canvas.addEventListener('touchstart', start, true);
-      this.canvas.addEventListener('touchend', stop, true);
-      this.canvas.addEventListener('touchmove', draw, true);
-    }
-
-    // make the cursor a crosshair to make it more clear what can be done
-    this.canvas.style.cursor = 'crosshair';
-  };
-
-  SayCheese.prototype.resetViewfinder = function() {
-    this.context.globalCompositeOperation = 'source-over';
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    this.viewfinder = {
-      startX: 0,
-      startY: 0,
-      endX: this.video.offsetWidth,
-      endY: this.video.offsetHeight,
-      width: this.video.offsetWidth,
-      height: this.video.offsetHeight
-    }
-
-    this.trigger('change');
-  };
-
-  SayCheese.prototype.takeSnapshot = function takeSnapshot(callback) {
+  SayCheese.prototype.takeSnapshot = function takeSnapshot() {
     var snapshot = document.createElement('canvas'),
         ctx      = snapshot.getContext('2d');
 
-    snapshot.width  = Math.abs(this.viewfinder.width),
-    snapshot.height = Math.abs(this.viewfinder.height);
+    snapshot.width  = this.viewfinder.width;
+    snapshot.height = this.viewfinder.height;
 
-    ctx.drawImage(this.video,
-                  Math.min(this.viewfinder.startX, this.viewfinder.endX),
-                  Math.min(this.viewfinder.startY, this.viewfinder.endY),
-                  snapshot.width,
-                  snapshot.height,
-                  0,
-                  0,
-                  snapshot.width,
-                  snapshot.height);
+    ctx.drawImage(this.video, 0, 0);
 
     this.snapshots.push(snapshot);
     this.trigger('snapshot', snapshot);
-
-    if (callback) {
-      callback.call(this, snapshot);
-    }
 
     ctx = null;
   };
 
   /* Start up the stream, if possible */
-  SayCheese.prototype.start = function start(callback) {
+  SayCheese.prototype.start = function start() {
     var success = function success(stream) {
       this.createVideo();
 
       // video width and height don't exist until metadata is loaded
       this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
-
       this.video.src = this.getStreamUrl(stream);
       this.element.appendChild(this.video);
     }.bind(this);
@@ -257,12 +136,7 @@ var SayCheese = (function($) {
       this.trigger('error', arguments);
     }.bind(this);
 
-    // add the callback to the start event if one is supplied.
-    if (callback) {
-      this.on('start', callback);
-    }
-
-    return this.getUserMedia(success, error);
+    return navigator.getUserMedia({ video: true }, success, error);
   };
 
   /* Stop it - TODO: figure out how to actually disable the stream */
@@ -273,4 +147,4 @@ var SayCheese = (function($) {
 
   return SayCheese;
 
-})($);
+})(jQuery);
