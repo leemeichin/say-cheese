@@ -75,8 +75,8 @@ var SayCheese = (function($) {
     this.video.addEventListener('canplay', function() {
       if (!streaming) {
         height = this.video.videoHeight / (this.video.videoWidth / width);
-        this.video.width = width;
-        this.video.height = height;
+        this.video.style.width = width;
+        this.video.style.height = height;
         streaming = true;
       }
     }.bind(this), false);
