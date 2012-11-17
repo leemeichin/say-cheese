@@ -145,8 +145,12 @@ var SayCheese = (function($) {
 
   SayCheese.prototype.stop = function stop() {
     this.stream.stop();
-    window.revokeObjectURL();
-    this.trigger('stop');
+
+    if (window.URL && window.URL.revokeObjectURL) {
+      window.URL.revokeObjectURL(this.video.src);
+    }
+
+    return this.trigger('stop');
   };
 
   return SayCheese;
