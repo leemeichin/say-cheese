@@ -3,6 +3,7 @@ asyncTest("triggers 'start' event when access permitted (click Allow)", function
   sayCheese.on('start', function() {
     ok(true, "start event triggered");
     start();
+    this.stop();
   });
 
   sayCheese.start();
@@ -18,6 +19,7 @@ asyncTest("triggers 'snapshot' event when taking a snapshot", function() {
   sayCheese.on('snapshot', function(evt, snapshot) {
     ok(snapshot.tagName === 'CANVAS', "snapshot event triggered");
     start();
+    this.stop();
   });
 
   sayCheese.start();
@@ -33,6 +35,20 @@ asyncTest("triggers 'stop' event and successfully cleans up when stopping", func
   });
 
   sayCheese.on('start', function() {
+    this.stop();
+  });
+
+  sayCheese.start();
+});
+
+asyncTest("snapshot feature does nothing when disabled", function() {
+  var sayCheese = new SayCheese('#camera-test', { snapshots: false }),
+      numCanvases = $('canvas').length;
+
+  sayCheese.on('start', function() {
+    ok(this.takeSnapshot() === false, "can't take snapshot");
+    ok($('canvas').length === numCanvases, "no new canvas element");
+    start();
     this.stop();
   });
 

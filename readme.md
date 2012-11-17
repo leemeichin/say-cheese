@@ -18,7 +18,7 @@ Usage
 Say Cheese exposes a minimal, event based API:
 
 ```javascript
-var sayCheese = new SayCheese('#element');
+var sayCheese = new SayCheese('#element', { snapshots: true });
 
 sayCheese.on('start', function() {
  // do something when started
@@ -50,6 +50,17 @@ sayCheese.on('snapshot', function(evt, snapshot) {
 
 sayCheese.takeSnapshot();
 ```
+
+I don't want snapshots; just give me the video!
+-----------------------------------------------
+
+No problem. Just disable it when you first create the instance:
+
+```
+var sayCheese = new SayCheese('#container-element', { snapshots: false });
+```
+
+Note that when you do this, `takeSnapshot()` will not do anything.
 
 Stopping the show
 -----------------

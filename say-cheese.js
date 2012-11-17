@@ -25,14 +25,18 @@ var SayCheese = (function($) {
   window.URL = (window.URL ||
                 window.webkitURL);
 
-  SayCheese = function SayCheese(element) {
+  SayCheese = function SayCheese(element, options) {
     this.snapshots = [],
     this.canvas = null,
     this.context = null,
     this.video = null,
     this.events = {},
-    this.stream = null;
+    this.stream = null,
+    this.options = {
+      snapshots: true
+    };
 
+    this.setOptions(options);
     this.element = document.querySelectorAll(element)[0];
     this.element.style.position = 'relative';
 
@@ -57,6 +61,10 @@ var SayCheese = (function($) {
     return $(this).triggerHandler(evt, data);
   };
 
+  SayCheese.prototype.setOptions = function setOptions(options) {
+    this.options = $.extend(this.options, options);
+  }
+
   SayCheese.prototype.getStreamUrl = function getStreamUrl() {
     if (window.URL && window.URL.createObjectURL) {
       return window.URL.createObjectURL(this.stream);
@@ -71,7 +79,15 @@ var SayCheese = (function($) {
         streaming = false;
 
     this.video = document.createElement('video');
-    this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
+
+    if (this.options.snapshots === true) {
+      this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
+    }
+
+    this.video.addEventListener('loadedmetadata', function() {
+      this.trigger('start');
+    }.bind(this), false);
+
     this.video.addEventListener('canplay', function() {
       if (!streaming) {
         height = this.video.videoHeight / (this.video.videoWidth / width);
@@ -98,6 +114,10 @@ var SayCheese = (function($) {
   };
 
   SayCheese.prototype.takeSnapshot = function takeSnapshot() {
+    if (this.options.snapshots === false) {
+      return false;
+    }
+
     var snapshot = document.createElement('canvas'),
         ctx      = snapshot.getContext('2d');
 
