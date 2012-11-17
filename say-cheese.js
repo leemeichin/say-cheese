@@ -144,11 +144,13 @@ var SayCheese = (function($) {
       this.trigger('error', error);
     }.bind(this);
 
-    return navigator.getUserMedia({ video: true }, success, error);
+    return navigator.getUserMedia({ video: true, audio: false }, success, error);
   };
 
   SayCheese.prototype.stop = function stop() {
-    return this.stream.stop();
+    this.stream.stop();
+    window.revokeObjectURL();
+    this.trigger('stop');
   };
 
   return SayCheese;
