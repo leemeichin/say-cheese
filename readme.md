@@ -56,7 +56,7 @@ I don't want snapshots; just give me the video!
 
 No problem. Just disable it when you first create the instance:
 
-```
+```javascript
 var sayCheese = new SayCheese('#container-element', { snapshots: false });
 ```
 
