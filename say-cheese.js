@@ -72,7 +72,6 @@ var SayCheese = (function($) {
 
   SayCheese.prototype.createVideo = function createVideo() {
     this.video = document.createElement('video');
-    this.video.autoplay = true;
   };
 
   SayCheese.prototype.setupCanvas = function setupCanvas() {
@@ -137,6 +136,7 @@ var SayCheese = (function($) {
 
       this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
       this.element.appendChild(this.video);
+      this.video.play();
     }.bind(this);
 
     /* error is also called when someone denies access */
