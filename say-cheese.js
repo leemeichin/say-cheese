@@ -66,7 +66,20 @@ var SayCheese = (function($) {
   };
 
   SayCheese.prototype.createVideo = function createVideo() {
+    var width     = 320,
+        height    = 0,
+        streaming = false;
+
     this.video = document.createElement('video');
+    this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
+    this.video.addEventListener('canplay', function() {
+      if (!streaming) {
+        height = this.video.videoHeight / (this.video.videoWidth / width);
+        this.video.width = width;
+        this.video.height = height;
+        streaming = true;
+      }
+    }.bind(this), false);
   };
 
   SayCheese.prototype.setupCanvas = function setupCanvas() {
@@ -88,8 +101,8 @@ var SayCheese = (function($) {
     var snapshot = document.createElement('canvas'),
         ctx      = snapshot.getContext('2d');
 
-    snapshot.width  = this.video.width;
-    snapshot.height = this.video.height;
+    snapshot.width  = this.video.videoWidth;
+    snapshot.height = this.video.videoHeight;
 
     ctx.drawImage(this.video, 0, 0);
 
@@ -118,7 +131,6 @@ var SayCheese = (function($) {
         this.video.src = this.getStreamUrl();
       }
 
-      this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
       this.element.appendChild(this.video);
       this.video.play();
     }.bind(this);
