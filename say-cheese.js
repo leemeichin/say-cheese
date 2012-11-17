@@ -25,10 +25,6 @@ var SayCheese = (function($) {
   window.URL = (window.URL ||
                 window.webkitURL);
 
-  function eventCoords(evt) {
-    return { x: evt.offsetX || evt.layerX, y: evt.offsetY || evt.layerY };
-  };
-
   SayCheese = function SayCheese(element) {
     this.snapshots = [],
     this.canvas = null,
