@@ -24,6 +24,21 @@ asyncTest("triggers 'snapshot' event when taking a snapshot", function() {
 });
 
 
+asyncTest("triggers 'stop' event and successfully cleans up when stopping", function() {
+  var sayCheese = new SayCheese('#camera-test');
+
+  sayCheese.on('stop', function() {
+    ok(true, "stop event triggered");
+    start();
+  });
+
+  sayCheese.on('start', function() {
+    this.stop();
+  });
+
+  sayCheese.start();
+});
+
 asyncTest("triggers 'error' event when not supported", function() {
   var sayCheese = new SayCheese('#camera-test');
 
