@@ -30,7 +30,6 @@ var SayCheese = (function($) {
   };
 
   SayCheese = function SayCheese(element) {
-    this.viewfinder = {},
     this.snapshots = [],
     this.canvas = null,
     this.context = null,
@@ -84,28 +83,17 @@ var SayCheese = (function($) {
     this.canvas.style.left = this.video.offsetLeft;
 
     this.context = this.canvas.getContext('2d');
-
     this.element.appendChild(this.canvas);
 
-    this.initViewfinder();
-
     return this.trigger('start');
-  };
-
-  /* The default viewfinder is just the exact size of the video */
-  SayCheese.prototype.initViewfinder = function initViewfinder() {
-    return this.viewfinder = {
-      width: this.video.offsetWidth,
-      height: this.video.offsetHeight
-    };
   };
 
   SayCheese.prototype.takeSnapshot = function takeSnapshot() {
     var snapshot = document.createElement('canvas'),
         ctx      = snapshot.getContext('2d');
 
-    snapshot.width  = this.viewfinder.width;
-    snapshot.height = this.viewfinder.height;
+    snapshot.width  = this.video.width;
+    snapshot.height = this.video.height;
 
     ctx.drawImage(this.video, 0, 0);
 
