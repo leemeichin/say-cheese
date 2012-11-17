@@ -54,7 +54,15 @@ sayCheese.takeSnapshot();
 Stopping the show
 -----------------
 
-The ability to stop a stream, and turn off the webcam, is still a WIP.
+There's also a function to stop the webcam after loading it up:
+
+```javascript
+sayCheese.on('stop', function(evt) {
+  // do something when it's stopped
+});
+
+sayCheese.stop();
+```
 
 Tests
 -----
@@ -67,9 +75,15 @@ the request, so it has to be done manually for each one.
 Compatibility
 -------------
 
-This'll work great in recent versions of Chrome and Opera. It's not in
-Firefox or IE yet, however, although support is included in the
-library.
+**Tested and verified to work in:**
+
+- Firefox Nightly and Aurora *
+- Google Chrome
+- Opera
+
+\* The webcam functionality itself works in stable Firefox, however a [bug in
+the browser](https://bugzilla.mozilla.org/show_bug.cgi?id=771833)
+prevents the snapshot feature from working correctly.
 
 License
 -------
