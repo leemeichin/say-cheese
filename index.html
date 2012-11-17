@@ -58,13 +58,37 @@ $(function() {
 
         </div>
         <div class='span6'>
-          <h3>Status and Compatibility</h3>
-          <p>Works for Chrome and Opera; is ready for Firefox and IE, when they add
-            support.</p>
+          <h3>Compatibility</h3>
+          <p><strong>Works for the following browsers:</strong></p>
+          <ul>
+            <li>Google Chrome
+            <li>Opera
+            <li>Firefox Aurora and Nightly builds (and Firefox 18 when released)
+          </ul>
+
+          <p><small><strong>Firefox users:</strong><br> Unless you're using
+          the Nightly build, you have to manually enable the webcam
+          functionality. You can do this by browsing
+          to <code>about:config</code>, right clicking the page, and
+          then selecting <code>Boolean</code> in the 'New'
+          menu. Enter <code>media.navigator.enabled</code>, and double
+          click it if it doesn't appear set
+          to <code>true</code>. This may or may not change in
+          the next version.</small></p>
+        </div>
+      </div>
+
+      <div class='row'>
+        <div class='span12'>
+          <h3>Source and documentation</h3>
+          <p>You can nab the source and see some slightly more detailed
+            documentation at the <a href='http://github.com/leemachin/say-cheese'>GitHub repo</a>.
+            Feel free to file any issues or patches or whatever.</p>
         </div>
       </div>
     </div>
 
+    </div>
     <footer>
       <div class='container'>
         <hr>
