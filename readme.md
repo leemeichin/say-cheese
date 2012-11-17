@@ -83,7 +83,8 @@ Compatibility
 
 \* The webcam functionality itself works in stable Firefox, however a [bug in
 the browser](https://bugzilla.mozilla.org/show_bug.cgi?id=771833)
-prevents the snapshot feature from working correctly.
+prevents the snapshot feature from working correctly. This will likely
+be fixed in version 18.
 
 License
 -------
