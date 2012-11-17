@@ -129,9 +129,13 @@ var SayCheese = (function($) {
       this.stream = stream;
       this.createVideo();
 
-      // video width and height don't exist until metadata is loaded
+      if (navigator.mozGetUserMedia) {
+        this.video.mozSrcObject = stream;
+      } else {
+        this.video.src = this.getStreamUrl();
+      }
+
       this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
-      this.video.src = this.getStreamUrl();
       this.element.appendChild(this.video);
     }.bind(this);
 
