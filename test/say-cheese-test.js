@@ -42,12 +42,10 @@ asyncTest("triggers 'stop' event and successfully cleans up when stopping", func
 });
 
 asyncTest("snapshot feature does nothing when disabled", function() {
-  var sayCheese = new SayCheese('#camera-test', { snapshots: false }),
-      numCanvases = $('canvas').length;
+  var sayCheese = new SayCheese('#camera-test', { snapshots: false });
 
   sayCheese.on('start', function() {
     ok(this.takeSnapshot() === false, "can't take snapshot");
-    ok($('canvas').length === numCanvases, "no new canvas element");
     start();
     this.stop();
   });

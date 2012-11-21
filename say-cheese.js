@@ -27,8 +27,6 @@ var SayCheese = (function($) {
 
   SayCheese = function SayCheese(element, options) {
     this.snapshots = [],
-    this.canvas = null,
-    this.context = null,
     this.video = null,
     this.events = {},
     this.stream = null,
@@ -43,10 +41,7 @@ var SayCheese = (function($) {
     return this;
   };
 
-  /**
-   * Wrap the jQuery stuff so as to minimise the impact of the framework on
-   * the rest of the code.
-   */
+  // todo: remove jquery dependency
   SayCheese.prototype.on = function on(evt, handler) {
     return $(this).on(evt, handler);
   };
@@ -80,12 +75,8 @@ var SayCheese = (function($) {
 
     this.video = document.createElement('video');
 
-    if (this.options.snapshots === true) {
-      this.video.addEventListener('loadedmetadata', this.setupCanvas.bind(this));
-    }
-
     this.video.addEventListener('loadedmetadata', function() {
-      this.trigger('start');
+      return this.trigger('start');
     }.bind(this), false);
 
     this.video.addEventListener('canplay', function() {
@@ -96,21 +87,6 @@ var SayCheese = (function($) {
         streaming = true;
       }
     }.bind(this), false);
-  };
-
-  SayCheese.prototype.setupCanvas = function setupCanvas() {
-    this.canvas = document.createElement('canvas');
-    this.canvas.width = this.video.offsetWidth;
-    this.canvas.height = this.video.offsetHeight;
-
-    this.canvas.style.position = 'absolute';
-    this.canvas.style.top = this.video.offsetTop;
-    this.canvas.style.left = this.video.offsetLeft;
-
-    this.context = this.canvas.getContext('2d');
-    this.element.appendChild(this.canvas);
-
-    return this.trigger('start');
   };
 
   SayCheese.prototype.takeSnapshot = function takeSnapshot() {
