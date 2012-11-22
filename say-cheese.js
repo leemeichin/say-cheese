@@ -37,7 +37,6 @@ var SayCheese = (function($) {
 
     this.setOptions(options);
     this.element = document.querySelectorAll(element)[0];
-    this.element.style.position = 'relative';
 
     return this;
   };
