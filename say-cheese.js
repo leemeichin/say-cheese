@@ -75,7 +75,7 @@ var SayCheese = (function($) {
 
     this.video = document.createElement('video');
 
-    this.video.addEventListener('loadedmetadata', function() {
+    this.video.addEventListener('playing', function() {
       return this.trigger('start');
     }.bind(this), false);
 
