@@ -18,7 +18,7 @@ Usage
 Say Cheese exposes a minimal, event based API:
 
 ```javascript
-var sayCheese = new SayCheese('#element', { snapshots: true });
+var sayCheese = new SayCheese('#container-element', { snapshots: true });
 
 sayCheese.on('start', function() {
  // do something when started
