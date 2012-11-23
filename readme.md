@@ -88,25 +88,13 @@ Compatibility
 
 **Tested and verified to work in:**
 
-- Firefox Nightly and Aurora *§
+- Firefox Nightly, Aurora, Beta
 - Google Chrome
 - Opera
 
-\* The webcam functionality itself works in stable Firefox, however a [bug in
-the browser](https://bugzilla.mozilla.org/show_bug.cgi?id=771833)
-prevents the snapshot feature from working correctly. The fix is now in the Beta
-channel.
-
-§ Firefox on the stable channel also only supports a smaller webcam resolution, though
-this has been upped to 640x480 in Aurora and Nightly, to match Chrome and Opera.
-
 #### Firefox caveats
 
-- A [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=771833) in the Firefox stable 
-  channel prevents the snapshot function from behaving correctly. This has been fixed
-  upstream and, as of 21st November 2012, is now in the Beta channel.
-
-- The stable release of Firefox also supports a lower resolution compared to Opera and Chrome.
+- The beta release of Firefox supports a lower resolution compared to Opera and Chrome.
   This has been improved in Aurora and Nightly and may hopefully work its way into stable
   in the next version or two.
 
