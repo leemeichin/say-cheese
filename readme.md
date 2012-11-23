@@ -76,6 +76,16 @@ sayCheese.on('stop', function(evt) {
 sayCheese.stop();
 ```
 
+Resources, things using Say Cheese, etc.
+----------------------------------------
+
+[getUserMedia on the server, with Sinatra and Say Cheese](http://blog.new-bamboo.co.uk/2012/11/23/getusermedia-on-the-server-with-sinatra-and-say-cheese)
+
+If you have any useful resources, or things you did with Say Cheese
+that you think should be shown off, by all means open a pull request
+or an issue or whatever.
+
+
 Tests
 -----
 
