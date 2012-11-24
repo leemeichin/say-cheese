@@ -31,13 +31,12 @@ var SayCheese = (function($) {
     this.events = {},
     this.stream = null,
     this.options = {
-      snapshots: true
+      snapshots: true,
+      audio: false
     };
 
     this.setOptions(options);
     this.element = document.querySelector(element);
-    this.element.style.position = 'relative';
-
     return this;
   };
 
@@ -133,7 +132,7 @@ var SayCheese = (function($) {
       this.trigger('error', error);
     }.bind(this);
 
-    return navigator.getUserMedia({ video: true, audio: false }, success, error);
+    return navigator.getUserMedia({ video: true, audio: this.options.audio }, success, error);
   };
 
   SayCheese.prototype.stop = function stop() {
