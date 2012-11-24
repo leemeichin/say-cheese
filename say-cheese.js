@@ -40,23 +40,37 @@ var SayCheese = (function($) {
     return this;
   };
 
-  // todo: remove jquery dependency
   SayCheese.prototype.on = function on(evt, handler) {
-    return $(this).on(evt, handler);
+    if (this.events.hasOwnProperty(evt) === false) {
+      this.events[evt] = [];
+    }
+
+    this.events[evt].push(handler)
   };
 
   SayCheese.prototype.off = function off(evt, handler) {
-    return $(this).off(evt, handler);
+    this.events = this.events[evt].filter(function(h) {
+      if (h !== handler) {
+        return h;
+      }
+    });
   };
 
   SayCheese.prototype.trigger = function trigger(evt, data) {
-    // bubbling up the DOM makes things go a bit crazy. This assumes
-    // preventDefault
-    return $(this).triggerHandler(evt, data);
+    if (this.events.hasOwnProperty(evt) === false) {
+      return false;
+    }
+
+    this.events[evt].forEach(function(handler) {
+      handler.call(this, data);
+    }.bind(this));
   };
 
   SayCheese.prototype.setOptions = function setOptions(options) {
-    this.options = $.extend(this.options, options);
+    // just use naïve, shallow cloning
+    for (var opt in options) {
+      this.options[opt] = options[opt];
+    }
   }
 
   SayCheese.prototype.getStreamUrl = function getStreamUrl() {
