@@ -76,6 +76,19 @@ sayCheese.on('stop', function(evt) {
 sayCheese.stop();
 ```
 
+Audio support
+-------------
+
+getUserMedia also allows you to use your mic, so you can turn audio on
+if you need it like this:
+
+```javascript
+var sayCheese = new SayCheese('#container-element', { audio: true });
+```
+
+This might be useful if you're using Say Cheese for the unified
+browser support, and not just taking pictures.
+
 Resources, things using Say Cheese, etc.
 ----------------------------------------
 
