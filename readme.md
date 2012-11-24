@@ -11,8 +11,6 @@ Grab the JS, host it, and add it to your page. For example:
 <script src='/assets/js/say-cheese.js'></script>
 ```
 
-It also requires jQuery (for events), so make sure to include that before this.
-
 Usage
 -----
 
@@ -26,12 +24,12 @@ sayCheese.on('start', function() {
  this.takeSnapshot();
 });
 
-sayCheese.on('error', function(evt, error) {
+sayCheese.on('error', function(error) {
  // handle errors, such as when a user denies the request to use the webcam,
  // or when the getUserMedia API isn't supported
 });
 
-sayCheese.on('snapshot', function(evt, snapshot) {
+sayCheese.on('snapshot', function(snapshot) {
   // do something with a snapshot canvas element, when taken
 });
 
@@ -45,7 +43,7 @@ You can take a snapshot at any time after initialisation, by calling
 `takeSnapshot()`:
 
 ```javascript
-sayCheese.on('snapshot', function(evt, snapshot) {
+sayCheese.on('snapshot', function(snapshot) {
   // do something with the snapshot
 });
 
@@ -69,7 +67,7 @@ Stopping the show
 There's also a function to stop the webcam after loading it up:
 
 ```javascript
-sayCheese.on('stop', function(evt) {
+sayCheese.on('stop', function() {
   // do something when it's stopped
 });
 
