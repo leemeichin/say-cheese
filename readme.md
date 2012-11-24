@@ -1,6 +1,7 @@
 Say Cheese!
 ===========
-A minimal library for integrating webcam snapshots into your app.
+A minimal library for integrating webcam snapshots into your app. It uses `getUserMedia`, a recent API for
+accessing audio and video in the browser.
 
 Setup
 -----
@@ -18,7 +19,7 @@ Usage
 Say Cheese exposes a minimal, event based API:
 
 ```javascript
-var sayCheese = new SayCheese('#element', { snapshots: true });
+var sayCheese = new SayCheese('#container-element', { snapshots: true });
 
 sayCheese.on('start', function() {
  // do something when started
@@ -75,6 +76,16 @@ sayCheese.on('stop', function(evt) {
 sayCheese.stop();
 ```
 
+Resources, things using Say Cheese, etc.
+----------------------------------------
+
+[getUserMedia on the server, with Sinatra and Say Cheese](http://blog.new-bamboo.co.uk/2012/11/23/getusermedia-on-the-server-with-sinatra-and-say-cheese)
+
+If you have any useful resources, or things you did with Say Cheese
+that you think should be shown off, by all means open a pull request
+or an issue or whatever.
+
+
 Tests
 -----
 
@@ -88,25 +99,13 @@ Compatibility
 
 **Tested and verified to work in:**
 
-- Firefox Nightly and Aurora *§
+- Firefox Nightly, Aurora, Beta
 - Google Chrome
 - Opera
 
-\* The webcam functionality itself works in stable Firefox, however a [bug in
-the browser](https://bugzilla.mozilla.org/show_bug.cgi?id=771833)
-prevents the snapshot feature from working correctly. The fix is now in the Beta
-channel.
-
-§ Firefox on the stable channel also only supports a smaller webcam resolution, though
-this has been upped to 640x480 in Aurora and Nightly, to match Chrome and Opera.
-
 #### Firefox caveats
 
-- A [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=771833) in the Firefox stable 
-  channel prevents the snapshot function from behaving correctly. This has been fixed
-  upstream and, as of 21st November 2012, is now in the Beta channel.
-
-- The stable release of Firefox also supports a lower resolution compared to Opera and Chrome.
+- The beta release of Firefox supports a lower resolution compared to Opera and Chrome.
   This has been improved in Aurora and Nightly and may hopefully work its way into stable
   in the next version or two.
 

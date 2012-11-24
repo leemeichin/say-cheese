@@ -36,8 +36,7 @@ var SayCheese = (function($) {
     };
 
     this.setOptions(options);
-    this.element = document.querySelectorAll(element)[0];
-
+    this.element = document.querySelector(element);
     return this;
   };
 
@@ -75,16 +74,13 @@ var SayCheese = (function($) {
 
     this.video = document.createElement('video');
 
-    this.video.addEventListener('loadedmetadata', function() {
-      return this.trigger('start');
-    }.bind(this), false);
-
     this.video.addEventListener('canplay', function() {
       if (!streaming) {
         height = this.video.videoHeight / (this.video.videoWidth / width);
         this.video.style.width = width;
         this.video.style.height = height;
         streaming = true;
+        return this.trigger('start');
       }
     }.bind(this), false);
   };
