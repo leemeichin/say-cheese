@@ -8,6 +8,7 @@
   max-width: 640px;
   max-height: 480px;
   float: left;
+  position: relative;
 }
 
 #action-buttons {
