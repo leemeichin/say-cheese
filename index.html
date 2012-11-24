@@ -44,11 +44,11 @@
 {% highlight javascript %}
 $(function() {
   var sayCheese = new SayCheese('#container-element');
-  sayCheese.on('start', function(evt, snapshot) {
+  sayCheese.on('start', function() {
     this.takeSnapshot();
   });
 
-  sayCheese.on('snapshot', function(evt, snapshot) {
+  sayCheese.on('snapshot', function(snapshot) {
     // a snapshot has been taken, do something with it :)
   });
 
@@ -103,7 +103,7 @@ $(function() {
       $(function() {
         var sayCheese = new SayCheese('#say-cheese-container');
 
-        sayCheese.on('start', function(evt) {
+        sayCheese.on('start', function() {
           $('#action-buttons').fadeIn('fast');
 
           $('#take-snapshot').on('click', function(evt) {
