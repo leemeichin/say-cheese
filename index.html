@@ -111,7 +111,20 @@ $(function() {
           });
         });
 
-        sayCheese.on('snapshot', function(evt, snapshot) {
+        sayCheese.on('error', function(error) {
+          var $alert = $('<div>');
+          $alert.addClass('alert alert-error').css('margin-top', '20px');
+
+          if (error === 'NOT_SUPPORTED') {
+            $alert.html("<strong>:(</strong> your browser doesn't support this yet!");
+          } else {
+            $alert.html("<strong>:(</strong> you have to click 'allow' to try me out!");
+          }
+
+          $('.say-cheese').prepend($alert);
+        });
+
+        sayCheese.on('snapshot', function(snapshot) {
           var img = document.createElement('img');
 
           $(img).on('load', function() {
