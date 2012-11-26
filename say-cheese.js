@@ -99,18 +99,21 @@ var SayCheese = (function($) {
     }.bind(this), false);
   };
 
-  SayCheese.prototype.takeSnapshot = function takeSnapshot() {
+  SayCheese.prototype.takeSnapshot = function takeSnapshot(width, height) {
     if (this.options.snapshots === false) {
       return false;
     }
 
+    width  = width || this.video.videoWidth;
+    height = height || this.video.videoHeight;
+
     var snapshot = document.createElement('canvas'),
         ctx      = snapshot.getContext('2d');
 
-    snapshot.width  = this.video.videoWidth;
-    snapshot.height = this.video.videoHeight;
+    snapshot.width  = this.width;
+    snapshot.height = this.height;
 
-    ctx.drawImage(this.video, 0, 0);
+    ctx.drawImage(this.video, 0, 0, width, height);
 
     this.snapshots.push(snapshot);
     this.trigger('snapshot', snapshot);
