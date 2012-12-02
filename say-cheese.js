@@ -110,8 +110,8 @@ var SayCheese = (function($) {
     var snapshot = document.createElement('canvas'),
         ctx      = snapshot.getContext('2d');
 
-    snapshot.width  = this.width;
-    snapshot.height = this.height;
+    snapshot.width  = width;
+    snapshot.height = height;
 
     ctx.drawImage(this.video, 0, 0, width, height);
 
