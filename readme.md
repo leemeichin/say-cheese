@@ -60,6 +60,15 @@ sayCheese.on('snapshot', function(snapshot) {
 sayCheese.takeSnapshot();
 ```
 
+If you need to change the size of the snapshot created, pass in the new width and height as arguments:
+
+```javascript
+var width = 640, height = 480;
+sayCheese.takeSnapshot(width, height);
+```
+
+It defaults to the full size of the video (generally `640x480`) if the arguments are omitted.
+
 I don't want snapshots; just give me the video!
 -----------------------------------------------
 
