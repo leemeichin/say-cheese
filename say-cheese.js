@@ -12,7 +12,7 @@
  * on anything but the newest browsers.
  */
 
-var SayCheese = (function($) {
+var SayCheese = (function() {
 
   var SayCheese;
 
@@ -164,4 +164,4 @@ var SayCheese = (function($) {
 
   return SayCheese;
 
-})(jQuery);
+})();
