@@ -95,18 +95,22 @@ sayCheese.on('stop', function() {
 sayCheese.stop();
 ```
 
-Audio support
--------------
+What, no audio support?
+-----------------------
 
-getUserMedia also allows you to use your mic, so you can turn audio on
-if you need it like this:
+Support for piping audio back into the browser, *without* using
+`PeerConnection`, is currently quite limited. In future full-on support will
+be built in when the APIs are standardised.
+
+Audio can be enabled by setting the flag to true when setting up the webcam:
 
 ```javascript
-var sayCheese = new SayCheese('#container-element', { audio: true });
+  var sayCheese = new SayCheese('#container-element', { audio: true });
 ```
 
-This might be useful if you're using Say Cheese for the unified
-browser support, and not just taking pictures.
+This will request the user's microphone as well as the webcam, but it won't
+actually do anything else. It does, however, allow you to experiment with
+possible (vendor specific) solutions yourself.
 
 Resources, things using Say Cheese, etc.
 ----------------------------------------
