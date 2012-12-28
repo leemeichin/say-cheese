@@ -98,11 +98,10 @@ sayCheese.stop();
 What, no audio support?
 -----------------------
 
-Support for piping audio back into the browser, *without* using
-`PeerConnection`, is currently quite limited. In future full-on support will
-be built in when the APIs are standardised.
+Support for piping audio back into the browser, is currently restricted to Chrome. Support
+will be added when the WebAudio API is implemented in the other browsers.
 
-Audio can be enabled by setting the flag to true when setting up the webcam:
+Either way, audio can be enabled by setting the flag to true when setting up the webcam:
 
 ```javascript
   var sayCheese = new SayCheese('#container-element', { audio: true });
