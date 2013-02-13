@@ -13,16 +13,6 @@ Grab the JS, host it, and add it to your page. For example:
 <script src='/assets/js/say-cheese.js'></script>
 ```
 
-### Note about jQuery
-
-Previously, jQuery was used to handle the events Say Cheese
-triggers. This has been removed so as to remove the dependency on
-external code.
-
-**If you've used earlier versions of SayCheese, or link to it direct
-  from the repo, be aware that triggered events are no longer passed
-  an event object as the first argument.**
-
 Usage
 -----
 
