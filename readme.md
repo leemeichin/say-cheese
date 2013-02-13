@@ -134,15 +134,9 @@ Compatibility
 
 **Tested and verified to work in:**
 
-- Firefox Nightly, Aurora, Beta
+- Firefox
 - Google Chrome
 - Opera
-
-#### Firefox caveats
-
-- The beta release of Firefox supports a lower resolution compared to Opera and Chrome.
-  This has been improved in Aurora and Nightly and may hopefully work its way into stable
-  in the next version or two.
 
 License
 -------
