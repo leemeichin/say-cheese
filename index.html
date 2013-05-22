@@ -5,18 +5,18 @@
 <html>
   <head>
     <title>Say Cheese!</title>
-    <link rel='stylesheet' href='public/css/bootstrap.min.css'>
-    <link rel='stylesheet' href='public/css/pygments.css'>
-    <link rel='stylesheet' href='public/css/say-cheese.css'>
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/pygments.css">
+    <link rel="stylesheet" href="public/css/say-cheese.css">
   </head>
 
   <body>
 
-    <div class='container'>
-      <div class='row'>
-        <div class='span12'>
+    <div class="container">
+      <div class="row">
+        <div class="span12">
           <h1>Say Cheese!</h1>
-          <p class='lead'>Minimal javascript library for integrating a webcam and snapshots into your app.</p>
+          <p class="lead">Minimal javascript library for integrating a webcam and snapshots into your app.</p>
           <iframe src="http://ghbtns.com/github-btn.html?user=leemachin&repo=say-cheese&type=watch&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="152px" height="30px"></iframe>
           <iframe src="http://ghbtns.com/github-btn.html?user=leemachin&repo=say-cheese&type=fork&count=true&size=large"
@@ -25,19 +25,19 @@
         </div>
       </div>
 
-      <div class='row'>
-        <div class='span12 say-cheese'>
-          <div id='say-cheese-container'>
-            <div id='action-buttons'>
-              <button class='btn btn-success' id='take-snapshot'>snap!</button>
+      <div class="row">
+        <div class="span12 say-cheese">
+          <div id="say-cheese-container">
+            <div id="action-buttons">
+              <button class="btn btn-success" id="take-snapshot">snap!</button>
             </div>
           </div>
-          <div id='say-cheese-snapshots'></div>
+          <div id="say-cheese-snapshots"></div>
         </div>
       </div>
 
-      <div class='row'>
-        <div class='span6'>
+      <div class="row">
+        <div class="span6">
           <h3>Taking pictures</h3>
           <p><strong>Say Cheese</strong> exposes a simple, event-based API for taking snapshots from your webcam:</p>
 
@@ -57,7 +57,7 @@ $(function() {
 {% endhighlight %}
 
         </div>
-        <div class='span6'>
+        <div class="span6">
           <h3>Compatibility</h3>
           <p><strong>Works for the following browsers:</strong></p>
           <ul>
@@ -68,11 +68,11 @@ $(function() {
         </div>
       </div>
 
-      <div class='row'>
-        <div class='span12'>
+      <div class="row">
+        <div class="span12">
           <h3>Source and documentation</h3>
           <p>You can nab the source and see some slightly more detailed
-            documentation at the <a href='http://github.com/leemachin/say-cheese'>GitHub repo</a>.
+            documentation at the <a href="http://github.com/leemachin/say-cheese">GitHub repo</a>.
             Feel free to file any issues or patches or whatever.</p>
         </div>
       </div>
@@ -80,16 +80,16 @@ $(function() {
 
     </div>
     <footer>
-      <div class='container'>
+      <div class="container">
         <hr>
-        <p>Cobbled together by <a href='http://leemach.in'>Lee Machin</a>, 2012</p>
+        <p>Cobbled together by <a href="http://leemach.in">Lee Machin</a>, 2012</p>
       </div>
     </footer>
 
 
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js'></script>
-    <script src='public/js/bootstrap.min.js'></script>
-    <script src='public/js/say-cheese.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script src="public/js/bootstrap.min.js"></script>
+    <script src="public/js/say-cheese.js"></script>
     <script>
       $(function() {
         var sayCheese = new SayCheese('#say-cheese-container');
