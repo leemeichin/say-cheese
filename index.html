@@ -92,7 +92,7 @@ $(function() {
     <script src="public/js/say-cheese.js"></script>
     <script>
       $(function() {
-        var sayCheese = new SayCheese('#say-cheese-container');
+        var sayCheese = new SayCheese('#say-cheese-container', { audio: true });
 
         sayCheese.on('start', function() {
           $('#action-buttons').fadeIn('fast');
@@ -107,7 +107,9 @@ $(function() {
           $alert.addClass('alert alert-error').css('margin-top', '20px');
 
           if (error === 'NOT_SUPPORTED') {
-            $alert.html("<strong>:(</strong> your browser doesn't support this yet!");
+            $alert.html("<strong>:(</strong> your browser doesn't support video yet!");
+          } else if (error === 'AUDIO_NOT_SUPPORTED') {
+            $alert.html("<strong>:(</strong> your browser doesn't support audio yet!");
           } else {
             $alert.html("<strong>:(</strong> you have to click 'allow' to try me out!");
           }
