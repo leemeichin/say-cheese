@@ -85,21 +85,24 @@ sayCheese.on('stop', function() {
 sayCheese.stop();
 ```
 
-What, no audio support?
------------------------
+Audio support
+-------------
 
-Support for piping audio back into the browser, is currently restricted to Chrome. Support
-will be added when the WebAudio API is implemented in the other browsers.
-
-Either way, audio can be enabled by setting the flag to true when setting up the webcam:
+Audio's disabled by default, because it doesn't have full browser support. You can still enable it
+for browsers that do support it, though. Just set `audio` to true when setting up.
 
 ```javascript
-  var sayCheese = new SayCheese('#container-element', { audio: true });
+var sayCheese = new SayCheese('#container-element', { audio: true });
 ```
 
-This will request the user's microphone as well as the webcam, but it won't
-actually do anything else. It does, however, allow you to experiment with
-possible (vendor specific) solutions yourself.
+This will request access to the microphone, and will currently pipe the audio through to your
+output device.
+
+This is supported in:
+
+- Google Chrome
+- Firefox 25+
+- Latest Opera
 
 Resources, things using Say Cheese, etc.
 ----------------------------------------
