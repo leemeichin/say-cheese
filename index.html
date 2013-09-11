@@ -43,7 +43,7 @@
 
 {% highlight javascript %}
 $(function() {
-  var sayCheese = new SayCheese('#container-element');
+  var sayCheese = new SayCheese('#container-element', { audio: true });
   sayCheese.on('start', function() {
     this.takeSnapshot();
   });
