@@ -35,7 +35,7 @@ var SayCheese = (function() {
     this.stream = null,
     this.options = {
       snapshots: true,
-      audio: true
+      audio: false
     };
 
     this.setOptions(options);
