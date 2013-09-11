@@ -22,6 +22,9 @@ var SayCheese = (function() {
                             navigator.msGetUserMedia ||
                             false);
 
+  window.AudioContext = (window.AudioContext ||
+                         window.webkitAudioContext);
+
   window.URL = (window.URL ||
                 window.webkitURL);
 
@@ -99,6 +102,16 @@ var SayCheese = (function() {
     }.bind(this), false);
   };
 
+  SayCheese.prototype.linkAudio = function linkAudio() {
+    this.audioCtx = new window.AudioContext();
+    this.audioStream = this.audioCtx.createMediaStreamSource(this.stream);
+
+    var biquadFilter = this.audioCtx.createBiquadFilter();
+
+    this.audioStream.connect(biquadFilter);
+    biquadFilter.connect(this.audioCtx.destination);
+  };
+
   SayCheese.prototype.takeSnapshot = function takeSnapshot(width, height) {
     if (this.options.snapshots === false) {
       return false;
@@ -138,6 +151,14 @@ var SayCheese = (function() {
         this.video.mozSrcObject = stream;
       } else {
         this.video.src = this.getStreamUrl();
+      }
+
+      if (this.options.audio === true) {
+        try {
+          this.linkAudio();
+        } catch(e) {
+          this.trigger('error', 'AUDIO_NOT_SUPPORTED');
+        }
       }
 
       this.element.appendChild(this.video);
