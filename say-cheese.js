@@ -154,7 +154,11 @@ var SayCheese = (function() {
       }
 
       if (this.options.audio === true) {
-        this.linkAudio()
+        try {
+          this.linkAudio();
+        } catch(e) {
+          this.trigger('error', 'AUDIO_NOT_SUPPORTED');
+        }
       }
 
       this.element.appendChild(this.video);
