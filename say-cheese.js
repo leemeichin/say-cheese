@@ -110,28 +110,6 @@ var SayCheese = (function() {
     biquadFilter.connect(this.audioCtx.destination);
   };
 
-  SayCheese.prototype.takeSnapshot = function takeSnapshot(width, height) {
-    if (this.options.snapshots === false) {
-      return;
-    }
-
-    width  = width || this.video.videoWidth;
-    height = height || this.video.videoHeight;
-
-    var snapshot = document.createElement('canvas'),
-        ctx      = snapshot.getContext('2d');
-
-    snapshot.width  = width;
-    snapshot.height = height;
-
-    ctx.drawImage(this.video, 0, 0, width, height);
-
-    this.snapshots.push(snapshot);
-    this.trigger('snapshot', snapshot);
-
-    ctx = null;
-  };
-
   /* Start up the stream, if possible */
   SayCheese.prototype.start = function start() {
 
