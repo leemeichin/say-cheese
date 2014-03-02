@@ -90,9 +90,8 @@ var SoundAndVision = (function () {
         biquadFilter.connect(audioCtx.destination)
 
         resolve(audioComponents)
-
       } catch(e) {
-        reject(e.toString())
+        reject(e)
       }
     })
   }
@@ -111,9 +110,11 @@ var SoundAndVision = (function () {
   /* Start up the stream, if possible */
   SoundAndVision.prototype.start = function () {
     return new Promise(function (resolve, reject) {
-      if (!navigator.getUserMedia) reject('NOT_SUPPORTED');
-
       var enabledFeatures = slice(this.options, 'video', 'audio')
+
+      var error = function (reason) {
+        reject(Error(reason))
+      }
 
       var success = function (stream) {
         this.stream = stream
@@ -126,11 +127,16 @@ var SoundAndVision = (function () {
           this.element.appendChild(this.video)
 
           resolve(this)
-        }.bind(this)).catch(reject)
+        }.bind(this)).catch(error)
 
       }.bind(this)
 
-       navigator.getUserMedia(enabledFeatures, success, reject)
+
+      try {
+        navigator.getUserMedia(enabledFeatures, success, error)
+      } catch(e) {
+        reject(e)
+      }
     }.bind(this))
   }
 
