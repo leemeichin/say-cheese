@@ -1,15 +1,10 @@
 /*
  * Say Cheese!
- * Lee Machin, 2012
- * http://leemach.in, http://new-bamboo.co.uk
+ * Lee Machin, 2012-2014
+ * http://new-bamboo.co.uk
  *
- * Minimal javascript library for integrating a webcam and snapshots into your app.
+ * Little javascript library for integrating a webcam and microphone into your app.
  *
- * Handles starting up the webcam and rendering the element, and also capturing shots
- * in a separate canvas element.
- *
- * Depends on video and canvas, and of course, getUserMedia. It's unlikely to work
- * on anything but the newest browsers.
  */
 
 var SoundAndVision = (function () {
@@ -83,13 +78,12 @@ var SoundAndVision = (function () {
       try {
         var audioCtx = new window.AudioContext(),
             audioStream = audioCtx.createMediaStreamSource(stream),
-            biquadFilter = audioCtx.createBiquadFilter(),
-            audioComponents = { context: audioCtx, stream: audioStream }
+            biquadFilter = audioCtx.createBiquadFilter()
 
         audioStream.connect(biquadFilter)
         biquadFilter.connect(audioCtx.destination)
 
-        resolve(audioComponents)
+        resolve({ context: audioCtx, stream: audioStream })
       } catch(e) {
         reject(e)
       }
