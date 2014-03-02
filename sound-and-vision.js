@@ -125,7 +125,6 @@ var SoundAndVision = (function () {
 
       }.bind(this)
 
-
       try {
         navigator.getUserMedia(enabledFeatures, success, error)
       } catch(e) {
