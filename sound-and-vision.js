@@ -12,18 +12,16 @@
  * on anything but the newest browsers.
  */
 
-var SayCheese = (function () {
+var SoundAndVision = (function () {
 
   navigator.getUserMedia = (navigator.getUserMedia ||
                             navigator.webkitGetUserMedia ||
                             navigator.mozGetUserMedia ||
                             navigator.msGetUserMedia)
 
-  window.AudioContext = (window.AudioContext ||
-                         window.webkitAudioContext)
+  window.AudioContext = (window.AudioContext || window.webkitAudioContext)
 
-  window.URL = (window.URL ||
-                window.webkitURL)
+  window.URL = (window.URL || window.webkitURL)
 
   function slice (obj /*, ... */) {
     var keys = Array.prototype.slice.call(arguments, 1)
@@ -35,7 +33,6 @@ var SayCheese = (function () {
   }
 
   function setOptions (options, newOptions) {
-
     for (var opt in newOptions || {}) {
       options[opt] = newOptions[opt];
     }
@@ -100,7 +97,7 @@ var SayCheese = (function () {
     })
   }
 
-  function SayCheese (element, options) {
+  function SoundAndVision (element, options) {
     this.video = null,
     this.audio = null,
     this.stream = null,
@@ -112,7 +109,7 @@ var SayCheese = (function () {
   }
 
   /* Start up the stream, if possible */
-  SayCheese.prototype.start = function () {
+  SoundAndVision.prototype.start = function () {
     return new Promise(function (resolve, reject) {
       if (!navigator.getUserMedia) reject('NOT_SUPPORTED');
 
@@ -137,7 +134,7 @@ var SayCheese = (function () {
     }.bind(this))
   }
 
-  SayCheese.prototype.stop = function () {
+  SoundAndVision.prototype.stop = function () {
     this.stream.stop()
 
     if (window.URL && window.URL.revokeObjectURL) {
@@ -145,6 +142,6 @@ var SayCheese = (function () {
     }
   }
 
-  return SayCheese
+  return SoundAndVision
 
 })();

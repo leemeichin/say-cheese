@@ -10,15 +10,15 @@ function equals (obj1, obj2) {
 
 test("options are set correctly", function () {
   var options   = { video: false, audio: false },
-      sayCheese = new SayCheese('#camera-test', options);
+      soundAndVision = new SoundAndVision('#camera-test', options);
 
-  ok(equals(sayCheese.options, options), "options correctly set");
+  ok(equals(soundAndVision.options, options), "options correctly set");
 });
 
 asyncTest("triggers 'start' event when access permitted (click Allow)", function () {
-  var sayCheese = new SayCheese('#camera-test');
+  var soundAndVision = new SoundAndVision('#camera-test');
 
-  sayCheese.start().then(function (camera) {
+  soundAndVision.start().then(function (camera) {
     ok(true, "start event triggered");
     start();
     camera.stop();
@@ -27,7 +27,7 @@ asyncTest("triggers 'start' event when access permitted (click Allow)", function
 });
 
 asyncTest("triggers 'error' event when not supported", function() {
-  var sayCheese = new SayCheese('#camera-test');
+  var soundAndVision = new SoundAndVision('#camera-test');
 
   // store correct property so we can switch it back after following test
   var origGetUserMedia = navigator.getUserMedia;
@@ -35,7 +35,7 @@ asyncTest("triggers 'error' event when not supported", function() {
   // simulate the lack of functionality
   navigator.getUserMedia = false;
 
-  sayCheese.start().catch(function (err) {
+  soundAndVision.start().catch(function (err) {
     navigator.getUserMedia = origGetUserMedia;
     ok(err === "NOT_SUPPORTED", "not supported event triggered");
     start();
@@ -44,9 +44,9 @@ asyncTest("triggers 'error' event when not supported", function() {
 });
 
 asyncTest("triggers 'error' event when access denied (click Deny)", function() {
-  var sayCheese = new SayCheese('#camera-test');
+  var soundAndVision = new SoundAndVision('#camera-test');
 
-  sayCheese.start().catch(function (err) {
+  soundAndVision.start().catch(function (err) {
     ok(true, "access denied event triggered");
   })
 });
