@@ -54,47 +54,47 @@ var SayCheese = (function () {
         height    = 240,
         streaming = false
 
-    video.addEventListener('canplay', function () {
-      if (!streaming) {
-        height = video.videoHeight / (video.videoWidth / width)
+    return new Promise(function (resolve, reject) {
+      video.addEventListener('canplay', function () {
+        if (!streaming) {
+          height = video.videoHeight / (video.videoWidth / width)
 
-        video.style.width = width
-        video.style.height = height
+          video.style.width = width
+          video.style.height = height
 
-        streaming = true
+          streaming = true
 
-        onSuccess({ video: video })
-      }
-    }, false)
+          resolve(video)
+        }
+      }, false)
 
-    if (navigator.mozGetUserMedia) {
+      if (navigator.mozGetUserMedia) {
         video.mozSrcObject = stream
-    } else {
+      } else {
         video.src = streamURL(stream)
-    }
+      }
 
-    video.play()
-
-    return video
+      video.play()
+    })
   }
 
-  function initAudio (stream, onSuccess, onError) {
-    try {
-      var audioCtx = new window.AudioContext(),
-          audioStream = audioCtx.createMediaStreamSource(stream),
-          biquadFilter = audioCtx.createBiquadFilter(),
-          audioComponents = { context: audioCtx, stream: audioStream }
+  function initAudio (stream) {
+    return new Promise(function (resolve, reject) {
+      try {
+        var audioCtx = new window.AudioContext(),
+            audioStream = audioCtx.createMediaStreamSource(stream),
+            biquadFilter = audioCtx.createBiquadFilter(),
+            audioComponents = { context: audioCtx, stream: audioStream }
 
-      audioStream.connect(biquadFilter)
-      biquadFilter.connect(audioCtx.destination)
+        audioStream.connect(biquadFilter)
+        biquadFilter.connect(audioCtx.destination)
 
-      onSuccess(audioComponents)
+        resolve(audioComponents)
 
-      return audioComponents
-
-    } catch(e) {
-      return onError(e)
-    }
+      } catch(e) {
+        reject(e.toString())
+      }
+    })
   }
 
 
@@ -102,7 +102,6 @@ var SayCheese = (function () {
     this.video = null,
     this.audio = null,
     this.stream = null,
-    this.events = {},
     this.options = setOptions({ audio: false, video: true }, options)
 
     this.element = document.querySelector(element)
@@ -110,47 +109,30 @@ var SayCheese = (function () {
     return this
   }
 
-  SayCheese.prototype.on = function (evt, handler) {
-    if (this.events.hasOwnProperty(evt) === false) {
-      this.events[evt] = []
-    }
-
-    this.events[evt].push(handler)
-  }
-
-  SayCheese.prototype.off = function (evt, handler) {
-    this.events[evt] = this.events[evt].filter(function (h) {
-      return h !== handler
-    })
-  }
-
-  SayCheese.prototype.trigger = function (evt, data) {
-    if (this.events.hasOwnProperty(evt)) {
-      this.events[evt].forEach(function (handler) {
-        handler.call(this, data)
-      }.bind(this))
-    }
-  }
-
   /* Start up the stream, if possible */
   SayCheese.prototype.start = function () {
+    return new Promise(function (resolve, reject) {
+      if (!navigator.getUserMedia) reject('NOT_SUPPORTED');
 
-    var error = this.trigger.bind(this, 'error')
-    var start = this.trigger.bind(this, 'start')
+      var enabledFeatures = slice(this.options, 'video', 'audio')
 
-    var success = function (stream) {
-      this.stream = stream
-      this.video = initVideo(stream, start, error)
-      this.audio = initAudio(stream, start, error)
+      var success = function (stream) {
+        this.stream = stream
 
-      this.element.appendChild(this.video)
+        var setup = Promise.all([initVideo(stream), initAudio(stream)])
 
-    }.bind(this)
+        setup.then(function (video, audio) {
+          this.video = video
+          this.audio = audio
+          this.element.appendChild(this.video)
 
-    // fail fast and softly if browser not supported
-    if (!navigator.getUserMedia) return error('NOT_SUPPORTED');
+          resolve(this)
+        }.bind(this)).catch(reject)
 
-    return navigator.getUserMedia(slice(this.options, 'video', 'audio'), success, error)
+      }.bind(this)
+
+       navigator.getUserMedia(enabledFeatures, success, reject)
+    })
   }
 
   SayCheese.prototype.stop = function () {
@@ -159,8 +141,6 @@ var SayCheese = (function () {
     if (window.URL && window.URL.revokeObjectURL) {
       window.URL.revokeObjectURL(this.video.src)
     }
-
-    this.trigger('stop')
   }
 
 })();
