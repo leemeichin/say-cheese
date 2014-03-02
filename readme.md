@@ -17,7 +17,7 @@ Grab the JS, host it, and add it to your page. For example:
 Usage
 -----
 
-Say Cheese exposes a minimal, Promise based API:
+Sound and Vision wraps `getUserMedia` and gives you back a `Promise`.
 
 ```javascript
 var soundAndVision = new SoundAndVision('#container-element', { audio: true, video: true });
