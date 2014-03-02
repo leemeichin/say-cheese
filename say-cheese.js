@@ -35,9 +35,12 @@ var SayCheese = (function () {
   }
 
   function setOptions (options, newOptions) {
-    for (var opt in newOptions) {
+
+    for (var opt in newOptions || {}) {
       options[opt] = newOptions[opt];
     }
+
+    return options
   }
 
   function streamURL (stream) {
@@ -97,8 +100,7 @@ var SayCheese = (function () {
     })
   }
 
-
-  return function SayCheese (element, options) {
+  function SayCheese (element, options) {
     this.video = null,
     this.audio = null,
     this.stream = null,
@@ -121,9 +123,9 @@ var SayCheese = (function () {
 
         var setup = Promise.all([initVideo(stream), initAudio(stream)])
 
-        setup.then(function (video, audio) {
-          this.video = video
-          this.audio = audio
+        setup.then(function (results) {
+          this.video = results[0]
+          this.audio = results[1]
           this.element.appendChild(this.video)
 
           resolve(this)
@@ -132,7 +134,7 @@ var SayCheese = (function () {
       }.bind(this)
 
        navigator.getUserMedia(enabledFeatures, success, reject)
-    })
+    }.bind(this))
   }
 
   SayCheese.prototype.stop = function () {
@@ -142,5 +144,7 @@ var SayCheese = (function () {
       window.URL.revokeObjectURL(this.video.src)
     }
   }
+
+  return SayCheese
 
 })();
