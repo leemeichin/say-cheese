@@ -59,7 +59,7 @@ var SayCheese = (function() {
 
   SayCheese.prototype.trigger = function trigger(evt, data) {
     if (this.events.hasOwnProperty(evt) === false) {
-      return false;
+      return;
     }
 
     this.events[evt].forEach(function(handler) {
@@ -95,7 +95,7 @@ var SayCheese = (function() {
         this.video.style.width = width;
         this.video.style.height = height;
         streaming = true;
-        return this.trigger('start');
+        this.trigger('start');
       }
     }.bind(this), false);
   };
@@ -112,7 +112,7 @@ var SayCheese = (function() {
 
   SayCheese.prototype.takeSnapshot = function takeSnapshot(width, height) {
     if (this.options.snapshots === false) {
-      return false;
+      return;
     }
 
     width  = width || this.video.videoWidth;
