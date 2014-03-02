@@ -101,10 +101,9 @@ var SoundAndVision = (function () {
     return this
   }
 
-  /* Start up the stream, if possible */
+
   SoundAndVision.prototype.start = function () {
     return new Promise(function (resolve, reject) {
-      var enabledFeatures = slice(this.options, 'video', 'audio')
 
       var error = function (reason) {
         reject(Error(reason))
@@ -126,6 +125,7 @@ var SoundAndVision = (function () {
       }.bind(this)
 
       try {
+        var enabledFeatures = slice(this.options, 'video', 'audio')
         navigator.getUserMedia(enabledFeatures, success, error)
       } catch(e) {
         reject(e)
