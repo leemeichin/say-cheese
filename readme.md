@@ -1,76 +1,43 @@
-Say Cheese!
-===========
-A minimal library for integrating webcam snapshots into your app. It uses `getUserMedia`, a recent API for
-accessing audio and video in the browser.
+Sound And Vision
+================
 
-[**Demo**](http://leemachin.github.com/say-cheese)
+A little library for integrating webcam video and microphone audio into your app.
+
+[**Demo**](http://leemachin.github.com/sound-and-vision)
 
 Setup
 -----
+
 Grab the JS, host it, and add it to your page. For example:
 
 ```html
-<script src='/assets/js/say-cheese.js'></script>
+<script src='/assets/js/sound-and-vision.js'></script>
 ```
 
 Usage
 -----
 
-Say Cheese exposes a minimal, event based API:
+Sound and Vision wraps `getUserMedia` and gives you back a `Promise`.
 
 ```javascript
-var sayCheese = new SayCheese('#container-element', { snapshots: true });
+var soundAndVision = new SoundAndVision('#container-element', { audio: true, video: true });
 
-sayCheese.on('start', function() {
- // do something when started
- this.takeSnapshot();
-});
-
-sayCheese.on('error', function(error) {
- // handle errors, such as when a user denies the request to use the webcam,
- // or when the getUserMedia API isn't supported
-});
-
-sayCheese.on('snapshot', function(snapshot) {
-  // do something with a snapshot canvas element, when taken
-});
-
-sayCheese.start();
+soundAndVision.start()
+  .then(doSomethingWithCameraOrMic)
+  .catch(handleErrors)
 ```
 
-Taking snapshots
-----------------
-
-You can take a snapshot at any time after initialisation, by calling
-`takeSnapshot()`:
+If all goes well, and the camera or mic are enabled, you're given direct access to the video and audio streams:
 
 ```javascript
-sayCheese.on('snapshot', function(snapshot) {
-  // do something with the snapshot
-});
-
-sayCheese.takeSnapshot();
+soundAndVision.start().then(function (media) {
+  media.video         // do something with the video element
+  media.audio.stream  // do something with the audio stream
+  media.audio.context // do something with the audio context
+})
 ```
 
-If you need to change the size of the snapshot created, pass in the new width and height as arguments:
-
-```javascript
-var width = 640, height = 480;
-sayCheese.takeSnapshot(width, height);
-```
-
-It defaults to the full size of the video (generally `640x480`) if the arguments are omitted.
-
-I don't want snapshots; just give me the video!
------------------------------------------------
-
-No problem. Just disable it when you first create the instance:
-
-```javascript
-var sayCheese = new SayCheese('#container-element', { snapshots: false });
-```
-
-Note that when you do this, `takeSnapshot()` will not do anything.
+From here you're free to do whatever you like. You can take snapshots by rendering a frame of the video to a canvas, record clips of video or audio and save them to disk, or go crazy and explore all the other things you can do with a canvas, webGL, and the WebAudio API.
 
 Stopping the show
 -----------------
@@ -78,25 +45,19 @@ Stopping the show
 There's also a function to stop the webcam after loading it up:
 
 ```javascript
-sayCheese.on('stop', function() {
-  // do something when it's stopped
-});
-
-sayCheese.stop();
+soundAndVision.stop()
 ```
 
 Audio support
 -------------
 
-Audio's disabled by default, because it doesn't have full browser support. You can still enable it
-for browsers that do support it, though. Just set `audio` to true when setting up.
+Audio's disabled by default, because it doesn't have full browser support. You can still enable it for browsers that do support it, though. Just set `audio` to true when setting up.
 
 ```javascript
-var sayCheese = new SayCheese('#container-element', { audio: true });
+var soundAndVision = new SoundAndVision('#container-element', { audio: true })
 ```
 
-This will request access to the microphone, and will currently pipe the audio through to your
-output device.
+This will request access to the microphone, and will pipe the audio through to your output device.
 
 This is supported in:
 
@@ -104,23 +65,11 @@ This is supported in:
 - Firefox 25+
 - Latest Opera
 
-Resources, things using Say Cheese, etc.
-----------------------------------------
-
-[getUserMedia on the server, with Sinatra and Say Cheese](http://blog.new-bamboo.co.uk/2012/11/23/getusermedia-on-the-server-with-sinatra-and-say-cheese)
-
-If you have any useful resources, or things you did with Say Cheese
-that you think should be shown off, by all means open a pull request
-or an issue or whatever.
-
 
 Tests
 -----
 
-Some basic tests cover the callback functionality. They were written
-to be run in a browser that supports the `getUserMedia` API. Due to
-the nature of that API, there is no automation for allowing or denying
-the request, so it has to be done manually for each one.
+Some basic tests cover the callback functionality. They were written to be run in a browser that supports the `getUserMedia` API. Due to the nature of that API, there is no automation for allowing or denying the request, so it has to be done manually for each one.
 
 Compatibility
 -------------
@@ -134,7 +83,7 @@ Compatibility
 License
 -------
 
-> Copyright (C) 2012 Lee Machin
+> Copyright (C) 2012-2014 Lee Machin
 >
 > Permission is hereby granted, free of charge, to any person obtaining
 > a copy of this software and associated documentation files (the
