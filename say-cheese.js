@@ -27,12 +27,10 @@ var SayCheese = (function () {
                 window.webkitURL);
 
   return function SayCheese (element, options) {
-    this.snapshots = [],
     this.video = null,
     this.events = {},
     this.stream = null,
     this.options = {
-      snapshots: true,
       audio: false
     };
 
@@ -41,7 +39,7 @@ var SayCheese = (function () {
     return this;
   };
 
-  SayCheese.prototype.on = function on (evt, handler) {
+  SayCheese.prototype.on = function (evt, handler) {
     if (this.events.hasOwnProperty(evt) === false) {
       this.events[evt] = [];
     }
@@ -49,13 +47,13 @@ var SayCheese = (function () {
     this.events[evt].push(handler)
   };
 
-  SayCheese.prototype.off = function off (evt, handler) {
+  SayCheese.prototype.off = function (evt, handler) {
     this.events[evt] = this.events[evt].filter(function(h) {
       return h !== handler;
     });
   };
 
-  SayCheese.prototype.trigger = function trigger (evt, data) {
+  SayCheese.prototype.trigger = function (evt, data) {
     if (this.events.hasOwnProperty(evt) === false) {
       return;
     }
@@ -65,14 +63,14 @@ var SayCheese = (function () {
     }.bind(this));
   };
 
-  SayCheese.prototype.setOptions = function setOptions (options) {
+  SayCheese.prototype.setOptions = function (options) {
     // just use naïve, shallow cloning
     for (var opt in options) {
       this.options[opt] = options[opt];
     }
   }
 
-  SayCheese.prototype.getStreamUrl = function getStreamUrl () {
+  SayCheese.prototype.getStreamUrl = function () {
     if (window.URL && window.URL.createObjectURL) {
       return window.URL.createObjectURL(this.stream);
     } else {
@@ -80,7 +78,7 @@ var SayCheese = (function () {
     }
   };
 
-  SayCheese.prototype.createVideo = function createVideo () {
+  SayCheese.prototype.createVideo = function () {
     var width     = 320,
         height    = 0,
         streaming = false;
@@ -98,7 +96,7 @@ var SayCheese = (function () {
     }.bind(this), false);
   };
 
-  SayCheese.prototype.linkAudio = function linkAudio () {
+  SayCheese.prototype.linkAudio = function () {
     this.audioCtx = new window.AudioContext();
     this.audioStream = this.audioCtx.createMediaStreamSource(this.stream);
 
@@ -109,7 +107,7 @@ var SayCheese = (function () {
   };
 
   /* Start up the stream, if possible */
-  SayCheese.prototype.start = function start () {
+  SayCheese.prototype.start = function () {
 
     // fail fast and softly if browser not supported
     if (navigator.getUserMedia === false) {
@@ -117,7 +115,7 @@ var SayCheese = (function () {
       return false;
     }
 
-    var success = function success (stream) {
+    var success = function (stream) {
       this.stream = stream;
       this.createVideo();
 
@@ -140,14 +138,14 @@ var SayCheese = (function () {
     }.bind(this);
 
     /* error is also called when someone denies access */
-    var error = function error (error) {
+    var error = function (error) {
       this.trigger('error', error);
     }.bind(this);
 
     return navigator.getUserMedia({ video: true, audio: this.options.audio }, success, error);
   };
 
-  SayCheese.prototype.stop = function stop () {
+  SayCheese.prototype.stop = function () {
     this.stream.stop();
 
     if (window.URL && window.URL.revokeObjectURL) {
@@ -156,7 +154,5 @@ var SayCheese = (function () {
 
     return this.trigger('stop');
   };
-
-  return SayCheese;
 
 })();
