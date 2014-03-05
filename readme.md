@@ -5,6 +5,8 @@ accessing audio and video in the browser.
 
 [**Demo**](http://leemachin.github.com/say-cheese)
 
+*If you don't care about snapshots and browser incompatibilities, like `Promises`, and just want an easy way to get at the webcam and mic, check out [Sound and Vision](https://github.com/leemachin/sound-and-vision).*
+
 Setup
 -----
 Grab the JS, host it, and add it to your page. For example:
