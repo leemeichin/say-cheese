@@ -98,11 +98,13 @@ var sayCheese = new SayCheese('#container-element', { audio: true });
 This will request access to the microphone, and will currently pipe the audio through to your
 output device.
 
-This is supported in:
+This is supported on the desktop in:
 
 - Google Chrome
 - Firefox 25+
 - Latest Opera
+
+Mobile device support is untested, so your mileage may vary.
 
 Resources, things using Say Cheese, etc.
 ----------------------------------------
