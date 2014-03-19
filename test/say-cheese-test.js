@@ -9,7 +9,7 @@ function equals(obj1, obj2) {
 }
 
 test("options are set correctly", function() {
-  var options   = { snapshots: false, audio: false },
+  var options   = { snapshots: false, audio: false, centered: false },
       sayCheese = new SayCheese('#camera-test', options);
 
   ok(equals(sayCheese.options, options), "options correctly set");
