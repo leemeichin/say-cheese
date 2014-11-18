@@ -35,7 +35,8 @@ var SayCheese = (function() {
     this.stream = null,
     this.options = {
       snapshots: true,
-      audio: false
+      audio: false,
+      centered: false
     };
 
     this.setOptions(options);
@@ -115,22 +116,41 @@ var SayCheese = (function() {
       return false;
     }
 
-    width  = width || this.video.videoWidth;
+    width  = width || (this.options.centered ? this.video.videoHeight : this.video.videoWidth);
     height = height || this.video.videoHeight;
 
     var snapshot = document.createElement('canvas'),
-        ctx      = snapshot.getContext('2d');
+        ctx      = snapshot.getContext('2d'),
+        rect     = this.sourceRectangle(width, height);
 
     snapshot.width  = width;
     snapshot.height = height;
 
-    ctx.drawImage(this.video, 0, 0, width, height);
+    ctx.drawImage(this.video, rect.x, rect.y, rect.width, rect.height, 0, 0, width, height);
 
     this.snapshots.push(snapshot);
     this.trigger('snapshot', snapshot);
 
     ctx = null;
   };
+
+  SayCheese.prototype.sourceRectangle = function(width, height) {
+    if (this.options.centered) {
+      return {
+        x: (this.video.videoWidth - width) / 2,
+        y: (this.video.videoHeight - height) / 2,
+        width: width,
+        height: height
+      };
+    } else {
+      return {
+        x: 0,
+        y: 0,
+        width: this.video.videoWidth,
+        height: this.video.videoHeight
+      };
+    }
+  }
 
   /* Start up the stream, if possible */
   SayCheese.prototype.start = function start() {
