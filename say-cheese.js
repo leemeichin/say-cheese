@@ -35,7 +35,8 @@ var SayCheese = (function() {
     this.stream = null,
     this.options = {
       snapshots: true,
-      audio: false
+      audio: false,
+      poster: ''
     };
 
     this.setOptions(options);
@@ -88,6 +89,10 @@ var SayCheese = (function() {
         streaming = false;
 
     this.video = document.createElement('video');
+
+    if (this.options.poster) {
+      this.video.setAttribute('poster', this.options.poster);
+    }
 
     this.video.addEventListener('canplay', function() {
       if (!streaming) {
