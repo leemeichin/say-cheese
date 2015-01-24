@@ -35,7 +35,8 @@ var SayCheese = (function() {
     this.stream = null,
     this.options = {
       snapshots: true,
-      audio: false
+      audio: false,
+      width: 320
     };
 
     this.setOptions(options);
@@ -83,7 +84,7 @@ var SayCheese = (function() {
   };
 
   SayCheese.prototype.createVideo = function createVideo() {
-    var width     = 320,
+    var width     = this.options.width,
         height    = 0,
         streaming = false;
 
@@ -92,8 +93,8 @@ var SayCheese = (function() {
     this.video.addEventListener('canplay', function() {
       if (!streaming) {
         height = this.video.videoHeight / (this.video.videoWidth / width);
-        this.video.style.width = width;
-        this.video.style.height = height;
+        this.video.width = width;
+        this.video.height = height;
         streaming = true;
         return this.trigger('start');
       }

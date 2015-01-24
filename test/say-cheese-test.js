@@ -9,7 +9,7 @@ function equals(obj1, obj2) {
 }
 
 test("options are set correctly", function() {
-  var options   = { snapshots: false, audio: false },
+  var options   = { snapshots: false, audio: false, width: 480 },
       sayCheese = new SayCheese('#camera-test', options);
 
   ok(equals(sayCheese.options, options), "options correctly set");
@@ -103,4 +103,14 @@ asyncTest("triggers 'error' event when access denied (click Deny)", function() {
   });
 
   sayCheese.start();
+});
+
+asyncTest("width is setted correctly", function() {
+  var width = 480;
+  var sayCheese = new SayCheese('#camera-test',{width:width});
+  sayCheese.on('start', function() {
+        ok(equals(sayCheese.video.width, width));
+  });
+  sayCheese.start();
+  
 });
