@@ -27,6 +27,11 @@ var SayCheese = (function() {
 
   window.URL = (window.URL ||
                 window.webkitURL);
+                
+  var ERRORS = {
+    NOT_SUPPORTED: 'NOT_SUPPORTED',
+    AUDIO_NOT_SUPPORTED: 'AUDIO_NOT_SUPPORTED'
+  }
 
   SayCheese = function SayCheese(element, options) {
     this.snapshots = [],
@@ -138,7 +143,7 @@ var SayCheese = (function() {
 
     // fail fast and softly if browser not supported
     if (navigator.getUserMedia === false) {
-      this.trigger('error', 'NOT_SUPPORTED');
+      this.trigger('error', ERRORS.NOT_SUPPORTED);
       return false;
     }
 
@@ -156,7 +161,7 @@ var SayCheese = (function() {
         try {
           this.linkAudio();
         } catch(e) {
-          this.trigger('error', 'AUDIO_NOT_SUPPORTED');
+          this.trigger('error', ERRORS.AUDIO_NOT_SUPPORTED);
         }
       }
 
