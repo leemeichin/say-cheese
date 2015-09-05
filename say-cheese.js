@@ -27,6 +27,11 @@ var SayCheese = (function() {
 
   window.URL = (window.URL ||
                 window.webkitURL);
+                
+  var ERRORS = {
+    NOT_SUPPORTED: 'NOT_SUPPORTED',
+    AUDIO_NOT_SUPPORTED: 'AUDIO_NOT_SUPPORTED'
+  }
 
   SayCheese = function SayCheese(element, options) {
     this.snapshots = [],
@@ -35,7 +40,8 @@ var SayCheese = (function() {
     this.stream = null,
     this.options = {
       snapshots: true,
-      audio: false
+      audio: false,
+      width: 320
     };
 
     this.setOptions(options);
@@ -83,7 +89,7 @@ var SayCheese = (function() {
   };
 
   SayCheese.prototype.createVideo = function createVideo() {
-    var width     = 320,
+    var width     = this.options.width,
         height    = 0,
         streaming = false;
 
@@ -92,8 +98,8 @@ var SayCheese = (function() {
     this.video.addEventListener('canplay', function() {
       if (!streaming) {
         height = this.video.videoHeight / (this.video.videoWidth / width);
-        this.video.style.width = width;
-        this.video.style.height = height;
+        this.video.width = width;
+        this.video.height = height;
         streaming = true;
         return this.trigger('start');
       }
@@ -137,7 +143,7 @@ var SayCheese = (function() {
 
     // fail fast and softly if browser not supported
     if (navigator.getUserMedia === false) {
-      this.trigger('error', 'NOT_SUPPORTED');
+      this.trigger('error', ERRORS.NOT_SUPPORTED);
       return false;
     }
 
@@ -155,7 +161,7 @@ var SayCheese = (function() {
         try {
           this.linkAudio();
         } catch(e) {
-          this.trigger('error', 'AUDIO_NOT_SUPPORTED');
+          this.trigger('error', ERRORS.AUDIO_NOT_SUPPORTED);
         }
       }
 
