@@ -94,7 +94,8 @@ var SayCheese = (function() {
         streaming = false;
 
     this.video = document.createElement('video');
-
+	this.video.autoplay=true;
+	
     this.video.addEventListener('canplay', function() {
       if (!streaming) {
         height = this.video.videoHeight / (this.video.videoWidth / width);
