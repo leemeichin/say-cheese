@@ -39,6 +39,7 @@ var SayCheese = (function() {
     this.events = {},
     this.stream = null,
     this.options = {
+      videoSource: null,
       snapshots: true,
       audio: false,
       width: 320
@@ -167,6 +168,8 @@ var SayCheese = (function() {
 
       this.element.appendChild(this.video);
       this.video.play();
+
+      this.trigger('success');
     }.bind(this);
 
     /* error is also called when someone denies access */
@@ -174,7 +177,11 @@ var SayCheese = (function() {
       this.trigger('error', error);
     }.bind(this);
 
-    return navigator.getUserMedia({ video: true, audio: this.options.audio }, success, error);
+    return navigator.getUserMedia({ video: {
+        optional: [{
+            sourceId: this.options.videoSource
+          }]
+        }, audio: this.options.audio }, success, error);
   };
 
   SayCheese.prototype.stop = function stop() {
@@ -190,3 +197,4 @@ var SayCheese = (function() {
   return SayCheese;
 
 })();
+
