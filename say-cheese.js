@@ -42,7 +42,8 @@ var SayCheese = (function() {
       videoSource: null,
       snapshots: true,
       audio: false,
-      width: 320
+      width: 320,
+      camResolution: null
     };
 
     this.setOptions(options);
@@ -177,11 +178,24 @@ var SayCheese = (function() {
       this.trigger('error', error);
     }.bind(this);
 
-    return navigator.getUserMedia({ video: {
-        optional: [{
-            sourceId: this.options.videoSource
-          }]
-        }, audio: this.options.audio }, success, error);
+    var videoConfig = {
+      optional: [
+        {
+          sourceId: this.options.videoSource
+        }
+      ]
+    }
+
+    if (this.options.camResolution) {
+      videoConfig.mandatory = {
+        minWidth: this.options.camResolution.width,
+        minHeight: this.options.camResolution.height,
+        maxWidth: this.options.camResolution.width,
+        maxHeight: this.options.camResolution.height
+      };
+    }
+
+    return navigator.getUserMedia({ video: videoConfig, audio: this.options.audio }, success, error);
   };
 
   SayCheese.prototype.stop = function stop() {
