@@ -186,7 +186,13 @@ var SayCheese = (function() {
     };
 
     SayCheese.prototype.stop = function stop() {
-        this.stream.stop();
+        var $this = this;
+
+        if(navigator.userAgent.indexOf('Chrome') > -1){
+          $this.stream.getTracks()[0].stop();
+        }else{
+          $this.stream.stop();
+        }
 
         if (window.URL && window.URL.revokeObjectURL) {
             window.URL.revokeObjectURL(this.video.src);
