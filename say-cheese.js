@@ -153,11 +153,17 @@ var SayCheese = (function() {
             this.stream = stream;
             this.createVideo();
 
-            if (navigator.mozGetUserMedia) {
-                this.video.mozSrcObject = stream;
-            } else {
-                this.video.src = this.getStreamUrl();
+            // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/srcObject
+            try {
+                this.video.srcObject = stream;
+            } catch (e) {
+                if (navigator.mozGetUserMedia) {
+                    this.video.mozSrcObject = stream;
+                } else {
+                    this.video.src = this.getStreamUrl();
+                }
             }
+
 
             if (this.options.audio === true) {
                 try {
