@@ -3,6 +3,10 @@ Say Cheese!
 A minimal library for integrating webcam snapshots into your app. It uses `getUserMedia`, a recent API for
 accessing audio and video in the browser.
 
+# NOTE
+
+Despite being unmaintained for many years this library still gets starred and forked quite frequently. Please file issues or contribute back from your forks, if you can, and I will share maintainer status with anyone who can help make this a canonical library.
+
 [**Demo**](http://leemachin.github.com/say-cheese)
 
 Setup
