@@ -5,7 +5,7 @@ accessing audio and video in the browser.
 
 # NOTE
 
-Despite being unmaintained for many years this library still gets starred and forked quite frequently. Please file issues or contribute back from your forks, if you can, and I will share maintainer status with anyone who can help make this a canonical library.
+Despite being unmaintained for many years this library still gets starred and forked quite frequently. Please file issues or contribute back from your forks, if you can, and I will share maintainer status with anyone who can help make this a canonical library with a v2.
 
 [**Demo**](http://leemachin.github.com/say-cheese)
 
